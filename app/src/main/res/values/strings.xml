@@ -4,4 +4,15 @@
     <string name="movement_bottom_bar">Contingent movement</string>
     <string name="performance_fragment_title">Performance</string>
     <string name="movement_fragment_title">Contingent</string>
+    <string name="choose_period">Choose period</string>
+    <string-array name="year_spinner_content">
+        <item>2021</item>
+    </string-array>
+    <string-array name="semester_spinner_content">
+        <item>All</item>
+        <item>1st Semester</item>
+        <item>2nd Semester</item>
+    </string-array>
+    <string name="year_label">Year</string>
+    <string name="semester_label">Semester</string>
 </resources>

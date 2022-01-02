@@ -21,13 +21,21 @@ class MovementFragment : Fragment() {
         binding_ = FragmentMovementBinding.inflate(inflater)
         binding = binding_!!
 
-        binding.updateMovButton.setOnClickListener {
-            childFragmentManager.beginTransaction()
-                .replace(binding.movContainer.id, NoDataFragment())
-                .commit()
+        binding.apply {
+            updateMovButton.setOnClickListener {
+                childFragmentManager.beginTransaction()
+                    .replace(binding.movContainer.id, NoDataFragment())
+                    .commit()
+            }
+            settingsButton.setOnClickListener {
+                showSettingsBottomSheet()
+            }
         }
-
         return binding.root
+    }
+    private fun showSettingsBottomSheet(){
+        val bottomSheet = SettingsBottomSheet()
+        bottomSheet.show(childFragmentManager, bottomSheet.tag)
     }
 
 }
