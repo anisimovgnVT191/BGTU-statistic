@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BGTU statistic</string>
+    <string name="performance">Academic performance</string>
+    <string name="movement">Contingent movement</string>
 </resources>
