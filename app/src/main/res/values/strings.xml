@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BGTU statistic</string>
-    <string name="performance">Academic performance</string>
-    <string name="movement">Contingent movement</string>
+    <string name="performance_bottom_bar">Academic performance</string>
+    <string name="movement_bottom_bar">Contingent movement</string>
+    <string name="performance_fragment_title">Performance</string>
+    <string name="movement_fragment_title">Contingent</string>
 </resources>

@@ -4,11 +4,11 @@
         android:id="@+id/performance"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_school_24"
-        android:title="@string/performance"/>
+        android:title="@string/performance_bottom_bar"/>
     <item
         android:id="@+id/movement"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_groups_24"
-        android:title="@string/movement"/>
+        android:title="@string/movement_bottom_bar"/>
 
 </menu>

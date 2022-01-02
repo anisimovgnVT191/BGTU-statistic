@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UILayer.UIelements.MovementFragment">
+    android:orientation="vertical"
+    tools:context=".UILayer.UIelements.PerformanceFragment">
 
-
-    <TextView
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mov_top_panel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Contingent movement" />
+        android:layout_height="?android:actionBarSize"
+        android:orientation="horizontal">
 
-</FrameLayout>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/update_mov_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_update_24"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="8dp"
+            android:background="?android:selectableItemBackground"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movement_fragment_title"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/ic_outline_settings_24"
+            android:background="?android:selectableItemBackground"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mov_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
