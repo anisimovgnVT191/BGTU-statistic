@@ -21,6 +21,4 @@ class SettingsBottomSheet: BottomSheetDialogFragment() {
 
         return binding.root
     }
-
-    override fun getTheme() = R.style.CustomBottomSheetDialog
 }
