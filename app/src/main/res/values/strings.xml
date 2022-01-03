@@ -15,4 +15,5 @@
     </string-array>
     <string name="year_label">Year</string>
     <string name="semester_label">Semester</string>
+    <string name="exit_button_text">Logout</string>
 </resources>

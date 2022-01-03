@@ -4,13 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.1" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_groups_24.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.1" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_logout_black_24dp.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/rounded_corners_shape.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_movement.xml" value="0.25" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_no_data.xml" value="0.23125" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_performance.xml" value="0.2" />
-        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_settings_bottom_sheet.xml" value="0.5" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_settings_bottom_sheet.xml" value="0.4395833333333333" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/menu/bottom_menu.xml" value="0.22" />
       </map>
     </option>

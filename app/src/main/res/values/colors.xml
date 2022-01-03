@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bottom_sheet_line">#20A4E4</color>
+    <color name="exit_button_title">#9C373A</color>
 </resources>

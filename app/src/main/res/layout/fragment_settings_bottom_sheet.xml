@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UILayer.UIelements.SettingsBottomSheet"
-    android:background="@drawable/rounded_corners_shape">
+    android:background="#F3F3FA"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/arrow"
@@ -38,61 +43,104 @@
         android:layout_height="wrap_content"
         android:text="@string/choose_period"
         android:textSize="14sp"
-        android:layout_marginStart="@dimen/start_margin"
+        android:textAllCaps="true"
+        android:layout_marginStart="24dp"
         app:layout_constraintTop_toBottomOf="@id/placeholder"
         app:layout_constraintStart_toStartOf="parent"/>
+
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/year_group"
+        android:id="@+id/spinners_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="@dimen/start_margin"
-        android:layout_marginEnd="@dimen/end_margin"
+        android:background="@drawable/rounded_corners_shape"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_semester">
-        <TextView
-            android:id="@+id/year_label"
-            android:layout_width="wrap_content"
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/year_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/year_label"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/year_spinner"
-            android:layout_width="0dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/start_margin"
+            android:layout_marginEnd="@dimen/end_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_semester">
+            <TextView
+                android:id="@+id/year_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/year_label"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/year_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/year_spinner_content"
+                android:textAlignment="viewEnd"
+                android:layout_weight="1"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#F3F3FA"
+            android:layout_marginStart="16dp"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/semester_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/year_spinner_content"
-            android:textAlignment="viewEnd"
-            android:layout_weight="1"/>
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/end_margin"
+            android:layout_marginStart="@dimen/start_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/year_group">
+
+            <TextView
+                android:id="@+id/semester_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/semester_label"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/semester_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/semester_spinner_content"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/semester_group"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/exit_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginEnd="@dimen/end_margin"
-        android:layout_marginStart="@dimen/start_margin"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="?android:actionBarSize"
+        android:textAllCaps="false"
+        android:text="@string/exit_button_text"
+        android:textColor="@color/exit_button_title"
+        android:textSize="16sp"
+        android:backgroundTint="#FFFFFF"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        app:icon="@drawable/ic_logout_black_24dp"
+        app:iconGravity="textEnd"
+        app:iconTint="#BF4B49"
+        app:layout_constraintTop_toBottomOf="@id/spinners_group"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/year_group">
-
-        <TextView
-            android:id="@+id/semester_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/semester_label"
-            android:textColor="@color/black"/>
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/semester_spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:entries="@array/semester_spinner_content"
-            android:layout_weight="1"
-            android:textAlignment="viewEnd"/>
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

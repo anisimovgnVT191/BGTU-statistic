@@ -17,7 +17,7 @@ class MovementFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding_ = FragmentMovementBinding.inflate(inflater)
         binding = binding_!!
 
@@ -35,6 +35,7 @@ class MovementFragment : Fragment() {
     }
     private fun showSettingsBottomSheet(){
         val bottomSheet = SettingsBottomSheet()
+
         bottomSheet.show(childFragmentManager, bottomSheet.tag)
     }
 
