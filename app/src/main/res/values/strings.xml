@@ -16,4 +16,8 @@
     <string name="year_label">Year</string>
     <string name="semester_label">Semester</string>
     <string name="exit_button_text">Logout</string>
+    <string name="contingent_year">2021 year</string>
+    <string name="deducted">Deducted</string>
+    <string name="enrolled">Enrolled</string>
+    <string name="more_details">More details</string>
 </resources>

@@ -31,6 +31,9 @@ class MovementFragment : Fragment() {
                 showSettingsBottomSheet()
             }
         }
+        childFragmentManager.beginTransaction()
+            .replace(binding.movContainer.id, ContingentPlotsFragment())
+            .commit()
         return binding.root
     }
     private fun showSettingsBottomSheet(){
