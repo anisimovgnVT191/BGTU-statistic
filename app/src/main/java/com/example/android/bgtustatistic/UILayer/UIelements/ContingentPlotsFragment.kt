@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.StateHolders.RecyclerTypes
 import com.example.android.bgtustatistic.databinding.FragmentContingentPlotsBinding
 
 class ContingentPlotsFragment : Fragment() {
@@ -14,9 +15,24 @@ class ContingentPlotsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding_ = FragmentContingentPlotsBinding.inflate(inflater)
         bindig = binding_!!
+
+        bindig.apply {
+            deductedDetailsButton.setOnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, InstitutesPlotsFragment.newInstance(RecyclerTypes.Deducted))
+                    .addToBackStack(null)
+                    .commit()
+            }
+            enrolledDetailsButton.setOnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, InstitutesPlotsFragment.newInstance(RecyclerTypes.Enrolled))
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
         return bindig.root
     }
 

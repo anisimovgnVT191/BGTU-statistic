@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UILayer.UIelements.PerformanceFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/institutes_top_panel"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_update_24"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="8dp"
+            android:textSize="20sp"
+            android:textColor="@android:color/tab_indicator_text"
+            android:textAllCaps="false"
+            android:text="Type"
+            app:icon="@drawable/ic_baseline_arrow_back_ios_24"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            android:background="?android:selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/movement_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Movement type"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/list_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
