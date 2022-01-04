@@ -24,6 +24,9 @@ class PerformanceFragment : Fragment() {
                 .replace(binding.perfContainer.id, NoDataFragment())
                 .commit()
         }
+        childFragmentManager.beginTransaction()
+            .replace(binding.perfContainer.id, PerformancePlotsFragment())
+            .commit()
 
         return binding.root
     }
