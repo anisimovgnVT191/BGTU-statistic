@@ -16,4 +16,12 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="OutlinedRoundedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.BSTU.TextInputLayout.Rounded</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.BSTU.TextInputLayout.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>

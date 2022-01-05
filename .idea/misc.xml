@@ -7,19 +7,25 @@
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_groups_24.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.1" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_logout_black_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/ic_outline_lock_24.xml" value="0.1" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/light_blue_cursor.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/rounded_corners_shape.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/drawable/tab_color.xml" value="0.1" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_contingent_plots.xml" value="0.33" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_institutes_plots.xml" value="0.33" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_institutes_plots_list.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_movement.xml" value="0.25" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_no_data.xml" value="0.23125" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_performance.xml" value="0.2" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_performance_plots.xml" value="0.41458333333333336" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/layout/fragment_settings_bottom_sheet.xml" value="0.4395833333333333" />
         <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/menu/bottom_menu.xml" value="0.22" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/mipmap-anydpi-v26/ic_launcher_logo_round.xml" value="0.1" />
+        <entry key="..\:/Users/tewat/AndroidStudioProjects/BGTUstatistic/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
