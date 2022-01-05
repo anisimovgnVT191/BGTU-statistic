@@ -26,6 +26,7 @@ class LoginFragment : Fragment() {
                     .replace(R.id.fragment_container, PerformanceFragment())
                     .commit()
                 val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+                bottomNav.selectedItemId = R.id.performance
                 bottomNav.visibility = View.VISIBLE
             }
         }
