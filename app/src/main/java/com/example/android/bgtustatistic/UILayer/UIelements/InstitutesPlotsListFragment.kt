@@ -35,6 +35,10 @@ class InstitutesPlotsListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding_ = null
+    }
     companion object {
         @JvmStatic
         fun newInstance(param1: RecyclerTypes) =

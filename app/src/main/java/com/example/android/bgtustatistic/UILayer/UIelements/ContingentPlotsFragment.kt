@@ -36,4 +36,8 @@ class ContingentPlotsFragment : Fragment() {
         return bindig.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding_ = null
+    }
 }

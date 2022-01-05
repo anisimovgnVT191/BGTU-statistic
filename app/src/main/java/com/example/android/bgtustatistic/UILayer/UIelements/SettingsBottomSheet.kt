@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.databinding.FragmentSettingsBottomSheetBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -27,8 +28,19 @@ class SettingsBottomSheet: BottomSheetDialogFragment() {
         binding = binding_!!
 
         binding.exitButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Exit button pressed", Toast.LENGTH_SHORT).show()
+            requireActivity().run{
+                val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+                bottomNav.visibility = View.GONE
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, LoginFragment())
+                    .commit()
+            }
         }
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding_ = null
     }
 }

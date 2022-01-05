@@ -37,6 +37,11 @@ class MovementFragment : Fragment() {
             .commit()
         return binding.root
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding_ = null
+    }
     private fun showSettingsBottomSheet(){
         val bottomSheet = SettingsBottomSheet()
 

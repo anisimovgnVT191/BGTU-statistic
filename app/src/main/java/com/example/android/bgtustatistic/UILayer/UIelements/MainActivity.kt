@@ -51,6 +51,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding_ = null
+    }
     // make EditText loose focus on tap outside (applies to Activity and Fragments)
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (ev?.action == MotionEvent.ACTION_DOWN) {

@@ -13,7 +13,6 @@ class NoDataFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.e("onCreateView", "NoDataFragment")
         return inflater.inflate(R.layout.fragment_no_data, container, false)
     }
 }
