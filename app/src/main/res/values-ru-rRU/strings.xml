@@ -20,4 +20,8 @@
     <string name="spinner_all">Все</string>
     <string name="spinner_1_sem">1 семестр</string>
     <string name="spinner_2_sem">2 семестр</string>
+    <string name="no_internet">Отсутствует интернет соединение</string>
+    <string name="wrong_credentials">Неправильный логин или пароль</string>
+    <string name="server_side_problem">Ошибка сервера</string>
+    <string name="empty_fields">Проверьте правильность заполненных полей</string>
 </resources>

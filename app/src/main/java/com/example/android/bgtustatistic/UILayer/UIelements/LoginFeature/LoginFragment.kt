@@ -43,7 +43,10 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(viewLifecycleOwner){
             if(it.isErrorOccurred){
-                Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    errorMessageFromCode(it.errorType!!),
+                    Toast.LENGTH_SHORT).show()
             }
             if(it.isLogin){
                 loginSuccessful()
@@ -55,6 +58,13 @@ class LoginFragment : Fragment() {
         super.onDestroy()
         binding_ = null
     }
+    private fun errorMessageFromCode(code: LoginErrorType) =
+        when(code){
+            LoginErrorType.NoInternetConnection -> getString(R.string.no_internet)
+            LoginErrorType.WrongCredentials -> getString(R.string.wrong_credentials)
+            LoginErrorType.ServerSideError -> getString(R.string.server_side_problem)
+            LoginErrorType.EmptyFields -> getString(R.string.empty_fields)
+        }
     private fun loginSuccessful(){
         requireActivity().run {
             val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)

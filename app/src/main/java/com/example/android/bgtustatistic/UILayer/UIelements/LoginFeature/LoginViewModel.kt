@@ -29,7 +29,7 @@ class LoginViewModel(
         if(!username.isValid() and !password.isValid()){
             _uiState.value = LoginState(
                 isErrorOccurred = true,
-                errorMessage = "One or two fields are blank")
+                errorType = LoginErrorType.EmptyFields)
             return
         }
         loginJob = viewModelScope.launch {
@@ -41,10 +41,14 @@ class LoginViewModel(
                 )
                 )
             }catch (e: IOException){
-                _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "no internet")
+                _uiState.value = LoginState(
+                    isErrorOccurred = true,
+                    errorType = LoginErrorType.NoInternetConnection)
                 return@launch
             }catch (e: HttpException){
-                _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "wrong login or password")
+                _uiState.value = LoginState(
+                    isErrorOccurred = true,
+                    errorType = LoginErrorType.WrongCredentials)
                 return@launch
             }
 
@@ -54,8 +58,12 @@ class LoginViewModel(
             }
             else
                 when(response.code()){
-                    400 -> _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "Wrong username or password")
-                    else -> _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "Server side error")
+                    400 -> _uiState.value = LoginState(
+                        isErrorOccurred = true,
+                        errorType = LoginErrorType.WrongCredentials)
+                    else -> _uiState.value = LoginState(
+                        isErrorOccurred = true,
+                        errorType = LoginErrorType.ServerSideError)
                 }
         }
     }

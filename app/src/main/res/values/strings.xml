@@ -27,4 +27,8 @@
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="wrong_credentials">Invalid username or password</string>
+    <string name="server_side_problem">Server side error</string>
+    <string name="empty_fields">One or two fields contains errors</string>
 </resources>
