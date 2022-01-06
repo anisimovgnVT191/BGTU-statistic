@@ -1,0 +1,62 @@
+package com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.DataModels.UserInfo
+import com.example.android.bgtustatistic.UILayer.StateHolders.LoginFeature.LoginState
+import com.example.android.bgtustatistic.UILayer.UIelements.isValid
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
+
+class LoginViewModel(
+    private val repository: LoginRepository
+): ViewModel() {
+    private val _uiState = MutableLiveData(LoginState())
+    val uiState: LiveData<LoginState> = _uiState
+
+    private var loginJob: Job? = null
+    fun login(
+        username: String,
+        password: String
+    ){
+        loginJob?.cancel()
+        if(!username.isValid() and !password.isValid()){
+            _uiState.value = LoginState(
+                isErrorOccurred = true,
+                errorMessage = "One or two fields are blank")
+            return
+        }
+        loginJob = viewModelScope.launch {
+            val response = try {
+                repository.login(
+                    UserInfo(
+                    username = username,
+                    password = password
+                )
+                )
+            }catch (e: IOException){
+                _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "no internet")
+                return@launch
+            }catch (e: HttpException){
+                _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "wrong login or password")
+                return@launch
+            }
+
+            if(response.isSuccessful && response.body()!=null) {
+                _uiState.value = LoginState(isLogin = true)
+                Log.e("viewModel: ", response.body()!!.token)
+            }
+            else
+                when(response.code()){
+                    400 -> _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "Wrong username or password")
+                    else -> _uiState.value = LoginState(isErrorOccurred = true, errorMessage = "Server side error")
+                }
+        }
+    }
+}

@@ -1,19 +1,13 @@
 package com.example.android.bgtustatistic.UILayer.UIelements
 
-import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginFragment
 import com.example.android.bgtustatistic.databinding.FragmentSettingsBottomSheetBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SettingsBottomSheet: BottomSheetDialogFragment() {

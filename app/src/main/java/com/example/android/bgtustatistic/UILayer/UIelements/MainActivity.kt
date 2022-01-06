@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginFragment
 import com.example.android.bgtustatistic.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
 
