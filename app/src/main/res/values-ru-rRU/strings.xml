@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="performance_bottom_bar">Успеваемость</string>
+    <string name="app_name">БГТУ</string>
+    <string name="movement_bottom_bar">Движение контингента</string>
+    <string name="performance_fragment_title">Успеваемость</string>
+    <string name="movement_fragment_title">Контингент</string>
+    <string name="choose_period">Выбор периода</string>
+    <string name="year_label">Год</string>
+    <string name="semester_label">Семестр</string>
+    <string name="exit_button_text">Выход</string>
+    <string name="contingent_year">2021 год</string>
+    <string name="deducted">Отчислено</string>
+    <string name="enrolled">Зачислено</string>
+    <string name="more_details">Подробнее</string>
+    <string name="arrears">Задолженности</string>
+    <string name="login">Вход</string>
+    <string name="password">Пароль</string>
+    <string name="username">Имя пользователя</string>
+    <string name="spinner_all">Все</string>
+    <string name="spinner_1_sem">1 семестр</string>
+    <string name="spinner_2_sem">2 семестр</string>
+</resources>

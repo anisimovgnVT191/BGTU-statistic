@@ -9,10 +9,13 @@
         <item>2021</item>
     </string-array>
     <string-array name="semester_spinner_content">
-        <item>All</item>
-        <item>1st Semester</item>
-        <item>2nd Semester</item>
+        <item>@string/spinner_all</item>
+        <item>@string/spinner_1_sem</item>
+        <item>@string/spinner_2_sem</item>
     </string-array>
+    <string name="spinner_all">All</string>
+    <string name="spinner_1_sem">1st Semester</string>
+    <string name="spinner_2_sem">2nd Semester</string>
     <string name="year_label">Year</string>
     <string name="semester_label">Semester</string>
     <string name="exit_button_text">Logout</string>
