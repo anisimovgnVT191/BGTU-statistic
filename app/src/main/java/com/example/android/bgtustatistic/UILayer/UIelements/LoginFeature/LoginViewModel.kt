@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.DataModels.UserInfo
+import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.UILayer.StateHolders.LoginFeature.LoginState
 import com.example.android.bgtustatistic.UILayer.UIelements.isValid
 import kotlinx.coroutines.Job
@@ -21,10 +22,8 @@ class LoginViewModel(
     val uiState: LiveData<LoginState> = _uiState
 
     private var loginJob: Job? = null
-    fun login(
-        username: String,
-        password: String
-    ){
+
+    fun login(username: String, password: String) {
         loginJob?.cancel()
         if(!username.isValid() and !password.isValid()){
             _uiState.value = LoginState(
@@ -54,7 +53,10 @@ class LoginViewModel(
 
             if(response.isSuccessful && response.body()!=null) {
                 _uiState.value = LoginState(isLogin = true)
-                Log.e("viewModel: ", response.body()!!.token)
+                UserManager.run {
+                    updateToken(response.body()!!.token)
+                    updateUser(username, password)
+                }
             }
             else
                 when(response.code()){
@@ -66,5 +68,10 @@ class LoginViewModel(
                         errorType = LoginErrorType.ServerSideError)
                 }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        loginJob?.cancel()
     }
 }

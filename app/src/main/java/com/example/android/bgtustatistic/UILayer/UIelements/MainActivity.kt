@@ -7,8 +7,9 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
+import com.example.android.bgtustatistic.UILayer.UIelements.LoadingFeature.LoadingFragment
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginFragment
 import com.example.android.bgtustatistic.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
 
@@ -22,13 +23,18 @@ class MainActivity : AppCompatActivity() {
         binding = binding_!!
         setContentView(binding.root)
 
-        savedInstanceState?:let {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, PerformanceFragment())
-//                .commit()
+
+        UserManager.currentUser?. let {
+            if(it.isValid()){
+                binding.bottomNavigation.visibility = View.VISIBLE
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, PerformanceFragment())
+                    .commit()
+            }
+        }?:let {
             binding.bottomNavigation.visibility = View.GONE
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, LoginFragment())
+                .replace(R.id.fragment_container, LoadingFragment())
                 .commit()
         }
 
