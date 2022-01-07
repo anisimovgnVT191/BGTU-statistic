@@ -11,9 +11,9 @@ interface LoginApi {
     @POST("token/auth/")
     suspend fun login(@Body userInfo: UserInfo): Response<Token>
 
-    @POST("/token/verify/")
+    @POST("token/verify/")
     suspend fun verify(@Body token: Token): Response<Token>
 
-    @POST("/token/refresh/")
+    @POST("token/refresh/")
     suspend fun refresh(@Body token: Token): Response<Token>
 }

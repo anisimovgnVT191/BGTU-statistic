@@ -1,24 +1,44 @@
 package com.example.android.bgtustatistic.UILayer.UIelements
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import com.example.android.bgtustatistic.DataLayer.DebtApi
+import com.example.android.bgtustatistic.DataLayer.DebtRemoteDataSource
+import com.example.android.bgtustatistic.DataLayer.DebtRepository
+import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.PerformanceViewModel
+import com.example.android.bgtustatistic.UILayer.PerformanceViewModelFactory
 import com.example.android.bgtustatistic.databinding.FragmentPerformanceBinding
+import kotlinx.coroutines.Dispatchers
+import java.util.*
 
 class PerformanceFragment : Fragment() {
     private var binding_: FragmentPerformanceBinding? = null
     private lateinit var binding: FragmentPerformanceBinding
+    private val viewModel: PerformanceViewModel by activityViewModels {
+        PerformanceViewModelFactory(
+            DebtRepository(
+                dataSource = DebtRemoteDataSource(
+                    debtApi = ServiceBuilder.buildService(DebtApi::class.java),
+                    ioDispatcher = Dispatchers.IO
+                )
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding_ = FragmentPerformanceBinding.inflate(inflater)
         binding = binding_!!
-
+        viewModel.fetchDebts()
         binding.updatePerfButton.setOnClickListener {
             childFragmentManager.beginTransaction()
                 .replace(binding.perfContainer.id, NoDataFragment())
@@ -31,6 +51,23 @@ class PerformanceFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.uiState.observe(requireActivity()){ state ->
+            state.debtsList?.let {}
+        }
+    }
+//    private fun initViewModel(){
+//        viewModelFactory = PerformanceViewModelFactory(
+//            DebtRepository(
+//                dataSource = DebtRemoteDataSource(
+//                    debtApi = ServiceBuilder.buildService(DebtApi::class.java),
+//                    ioDispatcher = Dispatchers.IO
+//                )
+//            )
+//        )
+//        viewModel = viewModelFactory.create(PerformanceViewModel::class.java)
+//    }
     override fun onDestroy() {
         super.onDestroy()
         binding_ = null

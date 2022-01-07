@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginFragment
@@ -14,6 +15,7 @@ import com.example.android.bgtustatistic.UILayer.UIelements.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.FragmentLoadingBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class LoadingFragment : Fragment() {
@@ -26,12 +28,14 @@ class LoadingFragment : Fragment() {
     ): View {
         _binding = FragmentLoadingBinding.inflate(inflater)
         binding = _binding!!
-        UserManager.initialize(//обязательно здесь и сейчас
-            requireActivity().getSharedPreferences(
-                getString(R.string.shared_preference_key_file),
-                Context.MODE_PRIVATE),
-            Dispatchers.IO
-        )
+        lifecycleScope.launch {
+            UserManager.initialize(//обязательно здесь и сейчас
+                requireActivity().getSharedPreferences(
+                    getString(R.string.shared_preference_key_file),
+                    Context.MODE_PRIVATE),
+                Dispatchers.IO
+            )
+        }
         viewModel = ViewModelProvider(this)[LoadingViewModel::class.java]
         return binding.root
     }
