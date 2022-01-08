@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.DataLayer.UserManager
+package com.example.android.bgtustatistic.DataLayer.UserManager.DataModels
 
 data class User(
     val username: String?,

@@ -1,5 +1,6 @@
-package com.example.android.bgtustatistic.DataLayer
+package com.example.android.bgtustatistic.DataLayer.PerformanceScreen
 
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

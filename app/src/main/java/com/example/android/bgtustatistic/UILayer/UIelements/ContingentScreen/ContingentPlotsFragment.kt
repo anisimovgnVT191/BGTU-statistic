@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.UILayer.UIelements
+package com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.StateHolders.RecyclerTypes
+import com.example.android.bgtustatistic.UILayer.UIelements.RecyclerTypes
+import com.example.android.bgtustatistic.UILayer.UIelements.InstitutesPlotsFragment
 import com.example.android.bgtustatistic.databinding.FragmentContingentPlotsBinding
 
 class ContingentPlotsFragment : Fragment() {
@@ -22,13 +23,17 @@ class ContingentPlotsFragment : Fragment() {
         bindig.apply {
             deductedDetailsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, InstitutesPlotsFragment.newInstance(RecyclerTypes.Deducted))
+                    .replace(R.id.fragment_container,
+                        InstitutesPlotsFragment.newInstance(RecyclerTypes.Deducted)
+                    )
                     .addToBackStack(null)
                     .commit()
             }
             enrolledDetailsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, InstitutesPlotsFragment.newInstance(RecyclerTypes.Enrolled))
+                    .replace(R.id.fragment_container,
+                        InstitutesPlotsFragment.newInstance(RecyclerTypes.Enrolled)
+                    )
                     .addToBackStack(null)
                     .commit()
             }

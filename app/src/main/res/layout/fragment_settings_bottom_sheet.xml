@@ -8,7 +8,7 @@
     android:id="@+id/bottom_sheet_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UILayer.UIelements.SettingsBottomSheet"
+    tools:context=".UILayer.UIelements.ContingentScreen.SettingsBottomSheet"
     android:background="#F3F3FA"
     app:layout_behavior="@string/bottom_sheet_behavior">
 

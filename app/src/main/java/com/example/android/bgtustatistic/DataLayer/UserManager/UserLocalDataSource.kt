@@ -1,7 +1,7 @@
 package com.example.android.bgtustatistic.DataLayer.UserManager
 
 import android.content.SharedPreferences
-import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.DataLayer.UserManager.DataModels.User
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

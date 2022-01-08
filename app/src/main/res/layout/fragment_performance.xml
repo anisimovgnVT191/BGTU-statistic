@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UILayer.UIelements.PerformanceFragment">
+    tools:context=".UILayer.UIelements.PerfromanceScreen.PerformanceFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/perf_top_panel"

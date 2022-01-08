@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.UILayer.UIelements
+package com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater

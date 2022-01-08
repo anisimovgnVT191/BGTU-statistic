@@ -1,6 +1,7 @@
 package com.example.android.bgtustatistic.DataLayer.UserManager
 
 import android.content.SharedPreferences
+import com.example.android.bgtustatistic.DataLayer.UserManager.DataModels.User
 import kotlinx.coroutines.CoroutineDispatcher
 
 object UserManager {
@@ -15,7 +16,7 @@ object UserManager {
         dataSource = UserLocalDataSource(sharedPreferences, ioDispatcher)
     }
 
-    suspend fun getUser():User {
+    suspend fun getUser(): User {
         currentUser = dataSource.getUser()
         return currentUser!!
     }

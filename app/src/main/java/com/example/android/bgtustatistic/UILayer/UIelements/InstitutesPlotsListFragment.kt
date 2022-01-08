@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.StateHolders.RecyclerTypes
 import com.example.android.bgtustatistic.databinding.FragmentInstitutesPlotsListBinding
 
 private const val ARG_PARAM1 = "recyclerType"

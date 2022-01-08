@@ -11,8 +11,7 @@ import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataS
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.UIelements.PerformanceFragment
-import com.example.android.bgtustatistic.UILayer.UIelements.isValid
+import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.FragmentLoginBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers

@@ -1,21 +1,20 @@
-package com.example.android.bgtustatistic.UILayer.UIelements
+package com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import com.example.android.bgtustatistic.DataLayer.DebtApi
-import com.example.android.bgtustatistic.DataLayer.DebtRemoteDataSource
-import com.example.android.bgtustatistic.DataLayer.DebtRepository
-import com.example.android.bgtustatistic.DataLayer.DepartmentDebt
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtApi
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteDataSource
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.DepartmentDebt
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.PerformanceViewModel
-import com.example.android.bgtustatistic.UILayer.PerformanceViewModelFactory
-import com.example.android.bgtustatistic.UILayer.StateHolders.RecyclerTypes
+import com.example.android.bgtustatistic.UILayer.UIelements.RecyclerTypes
+import com.example.android.bgtustatistic.UILayer.UIelements.InstitutesPlotsFragment
+import com.example.android.bgtustatistic.UILayer.makeOnlyBarsVisible
 import com.example.android.bgtustatistic.databinding.FragmentPerformancePlotsBinding
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -44,7 +43,9 @@ class PerformancePlotsFragment : Fragment() {
 
         binding.arrearsCard.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, InstitutesPlotsFragment.newInstance(RecyclerTypes.Performance))
+                .replace(R.id.fragment_container,
+                    InstitutesPlotsFragment.newInstance(RecyclerTypes.Performance)
+                )
                 .addToBackStack(null)
                 .commit()
         }
@@ -55,31 +56,20 @@ class PerformancePlotsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(requireActivity()){ state ->
             state.debtsList?.let {
-                setBarChartValues(it)
+                drawBarChart(it)
             }
         }
     }
-    private fun setBarChartValues(list: List<DepartmentDebt>){
+    private fun drawBarChart(list: List<DepartmentDebt>){
         val entries = ArrayList<BarEntry>()
 
         list.forEachIndexed { index, data ->
-            entries.add(BarEntry(index.toFloat(), data.count_depts.toFloat()))
+            entries.add(BarEntry(index.toFloat(), data.count_depts.toFloat(), data))
         }
         val dataSet = BarDataSet(entries, null)
-        val barData = BarData(dataSet)
         binding.performanceBarchart.run {
-            data = barData
-            description.isEnabled = false
-            axisLeft.setDrawLabels(false)
-            axisRight.setDrawLabels(false)
-            xAxis.setDrawGridLines(false)
-            axisLeft.setDrawGridLines(false)
-            axisRight.setDrawGridLines(false)
-            axisLeft.setDrawAxisLine(false)
-            axisRight.setDrawAxisLine(false)
-            xAxis.setDrawAxisLine(false)
-            xAxis.setDrawLabels(false)
-            legend.isEnabled = false
+            data = BarData(dataSet)
+            makeOnlyBarsVisible() //BarChartExtensions.kt
         }
         binding.performanceBarchart.invalidate()
     }

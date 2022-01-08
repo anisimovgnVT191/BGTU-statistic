@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.DataLayer
+package com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels
 
 data class DepartmentDebt(
     val count_depts: Int,

@@ -1,10 +1,8 @@
-package com.example.android.bgtustatistic.UILayer
+package com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.bgtustatistic.DataLayer.DebtRepository
-import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
-import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginViewModel
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
 
 class PerformanceViewModelFactory(
     private val debtRepository: DebtRepository

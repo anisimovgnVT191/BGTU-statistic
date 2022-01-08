@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UILayer.UIelements.PerformanceFragment">
+    tools:context=".UILayer.UIelements.PerfromanceScreen.PerformanceFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/mov_top_panel"

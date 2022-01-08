@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.UILayer.UIelements.LoadingFeature.LoadingFragment
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.MovementFragment
+import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
 

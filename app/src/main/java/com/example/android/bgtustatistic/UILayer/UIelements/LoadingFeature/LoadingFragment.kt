@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginFragment
-import com.example.android.bgtustatistic.UILayer.UIelements.PerformanceFragment
+import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.FragmentLoadingBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers

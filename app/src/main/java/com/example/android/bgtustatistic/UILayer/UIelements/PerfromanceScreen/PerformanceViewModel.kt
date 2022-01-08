@@ -1,13 +1,13 @@
-package com.example.android.bgtustatistic.UILayer
+package com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.bgtustatistic.DataLayer.DebtRepository
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
-import com.example.android.bgtustatistic.UILayer.UIelements.PerformanceState
+import com.example.android.bgtustatistic.UILayer.StateHolders.PerformanceScreen.PerformanceState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

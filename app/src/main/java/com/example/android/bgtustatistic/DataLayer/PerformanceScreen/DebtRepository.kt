@@ -1,4 +1,6 @@
-package com.example.android.bgtustatistic.DataLayer
+package com.example.android.bgtustatistic.DataLayer.PerformanceScreen
+
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteDataSource
 
 class DebtRepository(
     private val dataSource: DebtRemoteDataSource
