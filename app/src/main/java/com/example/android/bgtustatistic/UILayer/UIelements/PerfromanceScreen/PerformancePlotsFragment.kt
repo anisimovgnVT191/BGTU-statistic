@@ -20,6 +20,7 @@ import com.example.android.bgtustatistic.databinding.FragmentPerformancePlotsBin
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.PieDataSet
 import kotlinx.coroutines.Dispatchers
 
 class PerformancePlotsFragment : Fragment() {
@@ -42,14 +43,14 @@ class PerformancePlotsFragment : Fragment() {
         binding_ = FragmentPerformancePlotsBinding.inflate(inflater)
         binding = binding_!!
 
-        binding.arrearsCard.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container,
-                    InstitutesPlotsFragment.newInstance(RecyclerTypes.Performance)
-                )
-                .addToBackStack(null)
-                .commit()
-        }
+//        binding.arrearsCard.setOnClickListener {
+//            requireActivity().supportFragmentManager.beginTransaction()
+//                .replace(R.id.fragment_container,
+//                    InstitutesPlotsFragment.newInstance(RecyclerTypes.Performance, generatePieDataset())
+//                )
+//                .addToBackStack(null)
+//                .commit()
+//        }
         return binding.root
     }
 
@@ -61,6 +62,7 @@ class PerformancePlotsFragment : Fragment() {
             }
         }
     }
+
     private fun drawBarChart(list: List<DepartmentDebt>){
         val entries = ArrayList<BarEntry>()
 

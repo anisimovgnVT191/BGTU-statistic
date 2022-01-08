@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.databinding.FragmentInstitutesPlotsBinding
+import com.github.mikephil.charting.data.PieDataSet
 
 private const val ARG_PARAM1 = "recyclerType"
-
+private const val ARG_PARAM2 = "pieDataset"
 
 class InstitutesPlotsFragment : Fragment() {
     private var recyclerType: RecyclerTypes? = null
+    private var pieDataSet: Array<PieDataSet>?= null
     private var binding_ : FragmentInstitutesPlotsBinding? = null
     private lateinit var binding : FragmentInstitutesPlotsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +23,7 @@ class InstitutesPlotsFragment : Fragment() {
             it.getString(ARG_PARAM1)?.let { str ->
                 recyclerType = RecyclerTypes.valueOf(str)
             }
+            pieDataSet = it.getSerializable(ARG_PARAM2) as Array<PieDataSet>?
         }
     }
 

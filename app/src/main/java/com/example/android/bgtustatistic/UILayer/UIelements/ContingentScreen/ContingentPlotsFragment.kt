@@ -2,6 +2,7 @@ package com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +20,7 @@ import com.example.android.bgtustatistic.UILayer.UIelements.RecyclerTypes
 import com.example.android.bgtustatistic.UILayer.UIelements.InstitutesPlotsFragment
 import com.example.android.bgtustatistic.UILayer.makeOnlyBarsVisible
 import com.example.android.bgtustatistic.databinding.FragmentContingentPlotsBinding
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.*
 import kotlinx.coroutines.Dispatchers
 
 class ContingentPlotsFragment : Fragment() {
@@ -56,7 +55,9 @@ class ContingentPlotsFragment : Fragment() {
             enrolledDetailsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container,
-                        InstitutesPlotsFragment.newInstance(RecyclerTypes.Enrolled)
+                        InstitutesPlotsFragment.newInstance(
+                            RecyclerTypes.Enrolled,
+                            )
                     )
                     .addToBackStack(null)
                     .commit()
@@ -64,7 +65,9 @@ class ContingentPlotsFragment : Fragment() {
         }
         return binding.root
     }
-
+//    private fun generatePieDataSetDeducted(): Array<PieDataSet>{
+//
+//    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(requireActivity()){ state ->

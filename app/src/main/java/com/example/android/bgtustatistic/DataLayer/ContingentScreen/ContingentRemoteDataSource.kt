@@ -11,4 +11,14 @@ class ContingentRemoteDataSource(
         withContext(ioDispatcher){
             contingentApi.getContingent(token)
         }
+
+    suspend fun getDecreaseTypes(token: String) =
+        withContext(ioDispatcher){
+            contingentApi.getDecreaseTypes(token)
+        }
+
+    suspend fun getIncreaseTypes(token: String) =
+        withContext(ioDispatcher){
+            contingentApi.getIncreaseTypes(token)
+        }
 }
