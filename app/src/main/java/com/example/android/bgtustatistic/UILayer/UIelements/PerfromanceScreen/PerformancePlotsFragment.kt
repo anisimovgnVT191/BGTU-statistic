@@ -1,5 +1,6 @@
 package com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -67,6 +68,12 @@ class PerformancePlotsFragment : Fragment() {
             entries.add(BarEntry(index.toFloat(), data.count_depts.toFloat(), data))
         }
         val dataSet = BarDataSet(entries, null)
+        dataSet.setGradientColor(
+            Color.parseColor(
+                "#FFC5EC"
+            ), Color.parseColor(
+                "#FF79AF"
+            ))
         binding.performanceBarchart.run {
             data = BarData(dataSet)
             makeOnlyBarsVisible() //BarChartExtensions.kt

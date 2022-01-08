@@ -53,17 +53,7 @@ class PerformanceFragment : Fragment() {
             state.debtsList?.let {}
         }
     }
-//    private fun initViewModel(){
-//        viewModelFactory = PerformanceViewModelFactory(
-//            DebtRepository(
-//                dataSource = DebtRemoteDataSource(
-//                    debtApi = ServiceBuilder.buildService(DebtApi::class.java),
-//                    ioDispatcher = Dispatchers.IO
-//                )
-//            )
-//        )
-//        viewModel = viewModelFactory.create(PerformanceViewModel::class.java)
-//    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding_ = null

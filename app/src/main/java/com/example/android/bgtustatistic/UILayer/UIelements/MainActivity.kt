@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.UILayer.UIelements.LoadingFeature.LoadingFragment
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.MovementFragment
+import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.ContingentFragment
 import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId){
                 R.id.movement -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, MovementFragment())
+                        .replace(R.id.fragment_container, ContingentFragment())
                         .commit()
                     return@setOnItemSelectedListener true
                 }

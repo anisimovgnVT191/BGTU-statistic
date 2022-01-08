@@ -14,4 +14,5 @@ fun BarChart.makeOnlyBarsVisible(){
     xAxis.setDrawAxisLine(false)
     xAxis.setDrawLabels(false)
     legend.isEnabled = false
+    isDoubleTapToZoomEnabled = false
 }
