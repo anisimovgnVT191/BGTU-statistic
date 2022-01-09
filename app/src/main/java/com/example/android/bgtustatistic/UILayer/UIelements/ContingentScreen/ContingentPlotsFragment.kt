@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -12,15 +13,21 @@ import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentAp
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.ContingentMovement
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.DepartmentDebt
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.CustomBarChartRender
+import com.example.android.bgtustatistic.UILayer.OnTouchReleaseListener
 import com.example.android.bgtustatistic.UILayer.UIelements.RecyclerTypes
 import com.example.android.bgtustatistic.UILayer.UIelements.InstitutesPlotsFragment
 import com.example.android.bgtustatistic.UILayer.makeOnlyBarsVisible
 import com.example.android.bgtustatistic.databinding.FragmentContingentPlotsBinding
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlinx.coroutines.Dispatchers
 
 class ContingentPlotsFragment : Fragment() {
@@ -33,6 +40,12 @@ class ContingentPlotsFragment : Fragment() {
                     contingentApi = ServiceBuilder.buildService(ContingentApi::class.java),
                     ioDispatcher = Dispatchers.IO
                 )
+            ),
+            LoginRepository(
+                loginRemoteDataSource = LoginRemoteDataSource(
+                    loginApi = ServiceBuilder.buildService(LoginApi::class.java),
+                    ioDispatcher = Dispatchers.IO
+                )
             )
         )
     }
@@ -43,6 +56,7 @@ class ContingentPlotsFragment : Fragment() {
         _binding = FragmentContingentPlotsBinding.inflate(inflater)
         binding = _binding!!
 
+        initBarCharts()
         binding.apply {
             deductedDetailsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
@@ -65,15 +79,69 @@ class ContingentPlotsFragment : Fragment() {
         }
         return binding.root
     }
-//    private fun generatePieDataSetDeducted(): Array<PieDataSet>{
-//
-//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(requireActivity()){ state ->
             state.contingentList?.let {
                 drawBarChartDeducted(it)
                 drawBarCharEnrolled(it)
+            }
+        }
+    }
+    private fun initBarCharts(){
+        binding.deductedBarchart.apply {
+            setOnChartValueSelectedListener(
+                object : OnChartValueSelectedListener{
+                    override fun onNothingSelected() {
+                        binding.deductedTextview.text = getString(R.string.deducted)
+                        binding.deductedInsShortName.text = ""
+                    }
+
+                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+                        binding.deductedInsShortName.text = (e?.data as ContingentMovement).short_name_department
+                        binding.deductedTextview.text = e.y.toString()
+                    }
+                }
+            )
+            onChartGestureListener = OnTouchReleaseListener { me, _ ->
+                me?.let {
+                    if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
+                        binding.apply {
+                            deductedInsShortName.text = ""
+                            deductedTextview.text = getString(R.string.arrears)
+                            isSelected = false
+                            highlightValues(null)
+                        }
+                    }
+                }
+            }
+        }
+        binding.enrolledBarchart.apply {
+            setOnChartValueSelectedListener(
+                object : OnChartValueSelectedListener{
+                    override fun onNothingSelected() {
+                        binding.enrolledTextview.text = getString(R.string.deducted)
+                        binding.enrolledShortName.text = ""
+                    }
+
+                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+                        binding.enrolledShortName.text = (e?.data as ContingentMovement).short_name_department
+                        binding.enrolledTextview.text = e.y.toString()
+                    }
+                }
+            )
+            onChartGestureListener = OnTouchReleaseListener { me, _ ->
+                me?.let {
+                    if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
+                        binding.apply {
+                            enrolledShortName.text = ""
+                            enrolledTextview.text = getString(R.string.arrears)
+                            isSelected = false
+                            highlightValues(null)
+                        }
+                    }
+                }
             }
         }
     }
@@ -88,12 +156,8 @@ class ContingentPlotsFragment : Fragment() {
                 entries.add(BarEntry(index.toFloat(), deducted.toFloat(), data))
         }
         val dataSet = BarDataSet(entries, null)
-        dataSet.setGradientColor(
-            Color.parseColor(
-                "#FFC5EC"
-            ), Color.parseColor(
-                "#FF79AF"
-            ))
+        dataSet.setGradientColor(Color.parseColor("#FFC5EC"), Color.parseColor("#FF79AF"))
+        dataSet.setDrawValues(false)
         binding.deductedBarchart.run {
             data = BarData(dataSet)
             makeOnlyBarsVisible() //BarChartExtensions.kt
@@ -117,13 +181,8 @@ class ContingentPlotsFragment : Fragment() {
             ), Color.parseColor(
                 "#FF79AF"
             ))
-
+        dataSet.setDrawValues(false)
         binding.enrolledBarchart.run {
-//            val barChartRender = CustomBarChartRender(
-//                this, animator, viewPortHandler
-//            )
-//            barChartRender.setRadius(20)
-//            renderer = barChartRender
             data = BarData(dataSet)
             makeOnlyBarsVisible() //BarChartExtensions.kt
         }

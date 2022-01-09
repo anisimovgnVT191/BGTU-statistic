@@ -10,6 +10,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentApi
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.UILayer.UIelements.NoDataFragment
 import com.example.android.bgtustatistic.databinding.FragmentMovementBinding
@@ -25,6 +28,12 @@ class ContingentFragment : Fragment() {
                     contingentApi = ServiceBuilder.buildService(ContingentApi::class.java),
                     ioDispatcher = Dispatchers.IO
                 )
+            ),
+            LoginRepository(
+                loginRemoteDataSource = LoginRemoteDataSource(
+                    loginApi = ServiceBuilder.buildService(LoginApi::class.java),
+                    ioDispatcher = Dispatchers.IO
+                )
             )
         )
     }
@@ -38,9 +47,7 @@ class ContingentFragment : Fragment() {
         viewModel.fetchContingent()
         binding.apply {
             updateMovButton.setOnClickListener {
-                childFragmentManager.beginTransaction()
-                    .replace(binding.movContainer.id, NoDataFragment())
-                    .commit()
+                viewModel.updateToken()
             }
             settingsButton.setOnClickListener {
                 showSettingsBottomSheet()
@@ -56,8 +63,8 @@ class ContingentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(requireActivity()){ state ->
-            state.contingentList?.let {
-                Log.e("Contingent: ", it.toString())
+            if(state.relogined){
+                viewModel.fetchContingent()
             }
         }
     }

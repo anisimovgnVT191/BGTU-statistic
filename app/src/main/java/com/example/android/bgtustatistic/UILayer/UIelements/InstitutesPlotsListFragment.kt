@@ -12,6 +12,9 @@ import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentAp
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.Contingent
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtApi
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
@@ -39,7 +42,12 @@ class InstitutesPlotsListFragment : Fragment() {
                     debtApi = ServiceBuilder.buildService(DebtApi::class.java),
                     ioDispatcher = Dispatchers.IO
                 )
-            )
+            ),
+            LoginRepository(loginRemoteDataSource = LoginRemoteDataSource(
+                loginApi = ServiceBuilder.buildService(LoginApi::class.java),
+                ioDispatcher = Dispatchers.IO
+            ))
+
         )
     }
     private val contingentViewModel: ContingentViewModel by activityViewModels {
@@ -49,7 +57,11 @@ class InstitutesPlotsListFragment : Fragment() {
                     contingentApi = ServiceBuilder.buildService(ContingentApi::class.java),
                     ioDispatcher = Dispatchers.IO
                 )
-            )
+            ),
+            LoginRepository(loginRemoteDataSource = LoginRemoteDataSource(
+                loginApi = ServiceBuilder.buildService(LoginApi::class.java),
+                ioDispatcher = Dispatchers.IO
+            ))
         )
     }
     override fun onCreate(savedInstanceState: Bundle?) {

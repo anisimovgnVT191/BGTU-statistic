@@ -1,26 +1,36 @@
 package com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
+import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtApi
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.DepartmentDebt
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.OnTouchReleaseListener
 import com.example.android.bgtustatistic.UILayer.UIelements.RecyclerTypes
 import com.example.android.bgtustatistic.UILayer.UIelements.InstitutesPlotsFragment
 import com.example.android.bgtustatistic.UILayer.makeOnlyBarsVisible
 import com.example.android.bgtustatistic.databinding.FragmentPerformancePlotsBinding
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.ChartTouchListener
+import com.github.mikephil.charting.listener.OnChartGestureListener
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlinx.coroutines.Dispatchers
 
 class PerformancePlotsFragment : Fragment() {
@@ -33,6 +43,12 @@ class PerformancePlotsFragment : Fragment() {
                     debtApi = ServiceBuilder.buildService(DebtApi::class.java),
                     ioDispatcher = Dispatchers.IO
                 )
+            ),
+            LoginRepository(
+                loginRemoteDataSource = LoginRemoteDataSource(
+                    loginApi = ServiceBuilder.buildService(LoginApi::class.java),
+                    ioDispatcher = Dispatchers.IO
+                )
             )
         )
     }
@@ -42,6 +58,8 @@ class PerformancePlotsFragment : Fragment() {
     ): View {
         binding_ = FragmentPerformancePlotsBinding.inflate(inflater)
         binding = binding_!!
+
+        initBarChartLayout()
 
 //        binding.arrearsCard.setOnClickListener {
 //            requireActivity().supportFragmentManager.beginTransaction()
@@ -62,7 +80,37 @@ class PerformancePlotsFragment : Fragment() {
             }
         }
     }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initBarChartLayout(){
+        binding.performanceBarchart.apply {
+            setOnChartValueSelectedListener(
+                object : OnChartValueSelectedListener{
+                    override fun onNothingSelected() {
+                        binding.arrearsTextview.text = getString(R.string.arrears)
+                        binding.perfInstShorName.text = ""
+                    }
 
+                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+                        binding.arrearsTextview.text = e?.y?.toInt().toString()
+                        binding.perfInstShorName.text = (e?.data as DepartmentDebt).short_name_department
+                    }
+                }
+            )
+            onChartGestureListener = OnTouchReleaseListener { me, _ ->
+                me?.let {
+                    if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
+                        binding.apply {
+                            perfInstShorName.text = ""
+                            arrearsTextview.text = getString(R.string.arrears)
+                            isSelected = false
+                            highlightValues(null)
+                        }
+                    }
+                }
+            }
+
+        }
+    }
     private fun drawBarChart(list: List<DepartmentDebt>){
         val entries = ArrayList<BarEntry>()
 
@@ -76,6 +124,7 @@ class PerformancePlotsFragment : Fragment() {
             ), Color.parseColor(
                 "#FF79AF"
             ))
+        dataSet.setDrawValues(false)
         binding.performanceBarchart.run {
             data = BarData(dataSet)
             makeOnlyBarsVisible() //BarChartExtensions.kt

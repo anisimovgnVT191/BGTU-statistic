@@ -1,6 +1,9 @@
 package com.example.android.bgtustatistic.UILayer
 
+import android.view.MotionEvent
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.listener.ChartTouchListener
+import com.github.mikephil.charting.listener.OnChartGestureListener
 
 fun BarChart.makeOnlyBarsVisible(){
     description.isEnabled = false
@@ -15,4 +18,30 @@ fun BarChart.makeOnlyBarsVisible(){
     xAxis.setDrawLabels(false)
     legend.isEnabled = false
     isDoubleTapToZoomEnabled = false
+}
+
+class OnTouchReleaseListener(
+    private val onChartGestureEndBlock: (MotionEvent?, ChartTouchListener.ChartGesture?) -> Unit
+): OnChartGestureListener{
+    override fun onChartGestureStart(
+        me: MotionEvent?,
+        lastPerformedGesture: ChartTouchListener.ChartGesture?
+    ) {}
+
+    override fun onChartGestureEnd(
+        me: MotionEvent?,
+        lastPerformedGesture: ChartTouchListener.ChartGesture?
+    ) { onChartGestureEndBlock(me, lastPerformedGesture) }
+
+    override fun onChartLongPressed(me: MotionEvent?) {}
+    override fun onChartDoubleTapped(me: MotionEvent?) {}
+    override fun onChartSingleTapped(me: MotionEvent?) {}
+    override fun onChartFling(
+        me1: MotionEvent?,
+        me2: MotionEvent?,
+        velocityX: Float,
+        velocityY: Float
+    ) {}
+    override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {}
+    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {}
 }
