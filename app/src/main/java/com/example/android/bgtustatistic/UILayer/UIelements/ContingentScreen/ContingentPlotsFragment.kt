@@ -177,9 +177,9 @@ class ContingentPlotsFragment : Fragment() {
         val dataSet = BarDataSet(entries, null)
         dataSet.setGradientColor(
             Color.parseColor(
-                "#FFC5EC"
+                "#7CCBED"
             ), Color.parseColor(
-                "#FF79AF"
+                "#21A4E2"
             ))
         dataSet.setDrawValues(false)
         binding.enrolledBarchart.run {

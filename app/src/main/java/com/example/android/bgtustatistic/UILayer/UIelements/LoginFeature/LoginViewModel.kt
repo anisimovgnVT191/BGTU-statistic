@@ -40,6 +40,7 @@ class LoginViewModel(
                 )
                 )
             }catch (e: IOException){
+                Log.e("login", e.message + e.localizedMessage)
                 _uiState.value = LoginState(
                     isErrorOccurred = true,
                     errorType = LoginErrorType.NoInternetConnection)

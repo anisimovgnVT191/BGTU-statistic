@@ -19,6 +19,7 @@ import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtApi
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
+import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.PlotsAdapter
 import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.ContingentViewModel
 import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.ContingentViewModelFactory
@@ -74,21 +75,23 @@ class InstitutesPlotsListFragment : Fragment() {
     }
     private fun generatePieDataSetEnrolled(): Array<PieDataSet>{
         val result = emptyList<PieDataSet>().toMutableList()
-        contingentViewModel.uiState.value?.let {
-            it.contingentList?.forEachIndexed{index, contingentMovement ->
+        contingentViewModel.uiState.value?.let { state ->
+            state.contingentList?.forEach { contingentMovement ->
                 val entries = ArrayList<PieEntry>()
-                contingentMovement.contingent.forEachIndexed { index, contingent ->
-                    contingent.increasecontingent_set.forEachIndexed {index, increasecontingentSet ->
-                        val label = contingentViewModel.uiState.value?.increaseTypes?.find {
-                            it.id == increasecontingentSet.type
+                val increasecontingentSetMap = contingentMovement.contingent
+                    .map { it.increasecontingent_set }.flatten().groupBy { it.type }
+                increasecontingentSetMap.keys.forEach { key ->
+                    val count = increasecontingentSetMap[key]
+                        ?.fold(0) { acc, increasecontingentSet ->
+                            acc + increasecontingentSet.count_contingent
                         }
-                        entries.add(
-                            PieEntry(
-                            increasecontingentSet.count_contingent.toFloat(),
-                            label?.type_reason?:"Unknown",
-                            increasecontingentSet)
+                    val label = contingentViewModel.uiState.value?.increaseTypes?.find { it.id == key }
+                    entries.add(
+                        PieEntry(
+                            count?.toFloat()?:0F,
+                            label?.type_reason?:"Unknown"
                         )
-                    }
+                    )
                 }
                 if(entries.size != 0)
                     result.add(PieDataSet(entries, contingentMovement.short_name_department))
@@ -99,21 +102,23 @@ class InstitutesPlotsListFragment : Fragment() {
     }
     private fun generatePieDataSetDeducted(): Array<PieDataSet>{
         val result = emptyList<PieDataSet>().toMutableList()
-        contingentViewModel.uiState.value?.let {
-            it.contingentList?.forEachIndexed{index, contingentMovement ->
+        contingentViewModel.uiState.value?.let { state ->
+            state.contingentList?.forEach { contingentMovement ->
                 val entries = ArrayList<PieEntry>()
-                contingentMovement.contingent.forEachIndexed { index, contingent ->
-                    contingent.decreasecontingent_set.forEachIndexed {index, increasecontingentSet ->
-                        val label = contingentViewModel.uiState.value?.decreaseTypes?.find {
-                            it.id == increasecontingentSet.type
+                val decreasecontingentSetMap = contingentMovement.contingent
+                    .map { it.decreasecontingent_set }.flatten().groupBy { it.type }
+                decreasecontingentSetMap.keys.forEach { key ->
+                    val count = decreasecontingentSetMap[key]
+                        ?.fold(0) { acc, decreasecontingentSet ->
+                            acc + decreasecontingentSet.count_contingent
                         }
-                        entries.add(
-                            PieEntry(
-                                increasecontingentSet.count_contingent.toFloat(),
-                                label?.type_reason?:"Unknown",
-                                increasecontingentSet)
+                    val label = contingentViewModel.uiState.value?.decreaseTypes?.find { it.id == key }
+                    entries.add(
+                        PieEntry(
+                            count?.toFloat()?:0F,
+                            label?.type_reason?:"Unknown"
                         )
-                    }
+                    )
                 }
                 if(entries.size != 0)
                     result.add(PieDataSet(entries, contingentMovement.short_name_department))
@@ -128,13 +133,18 @@ class InstitutesPlotsListFragment : Fragment() {
     ): View {
         _binding = FragmentInstitutesPlotsListBinding.inflate(inflater)
         binding = _binding!!
-
+        val pieChartColors = listOf(
+            resources.getColor(R.color.piechart_slice1),
+            resources.getColor(R.color.piechart_slice2),
+            resources.getColor(R.color.piechart_slice3),
+            resources.getColor(R.color.piechart_slice4)
+        )
         binding.plotsRecycler.apply {
             layoutManager = LinearLayoutManager(requireActivity())
             if(recyclerType!! == RecyclerTypes.Enrolled)
-                adapter = PlotsAdapter(generatePieDataSetEnrolled())
+                adapter = PlotsAdapter(generatePieDataSetEnrolled(), pieChartColors)
             if(recyclerType!! == RecyclerTypes.Deducted)
-                adapter = PlotsAdapter(generatePieDataSetDeducted())
+                adapter = PlotsAdapter(generatePieDataSetDeducted(), pieChartColors)
         }
         return binding.root
     }

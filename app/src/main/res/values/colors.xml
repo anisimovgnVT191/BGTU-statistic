@@ -10,4 +10,8 @@
     <color name="bottom_sheet_line">#20A4E4</color>
     <color name="exit_button_title">#9C373A</color>
     <color name="button_light_blue">#1E4579</color>
+    <color name="piechart_slice1">#1FA2E1</color>
+    <color name="piechart_slice2">#FF74AB</color>
+    <color name="piechart_slice3">#1F3D6F</color>
+    <color name="piechart_slice4">#4A4F6F</color>
 </resources>
