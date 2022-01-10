@@ -15,6 +15,7 @@ import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataS
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.UILayer.UIelements.NoDataFragment
+import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformancePlotsFragment
 import com.example.android.bgtustatistic.databinding.FragmentMovementBinding
 import kotlinx.coroutines.Dispatchers
 
@@ -55,7 +56,7 @@ class ContingentFragment : Fragment() {
         }
 
         childFragmentManager.beginTransaction()
-            .replace(binding.movContainer.id, ContingentPlotsFragment())
+            .replace(binding.movContainer.id, NoDataFragment())
             .commit()
         return binding.root
     }
@@ -65,6 +66,15 @@ class ContingentFragment : Fragment() {
         viewModel.uiState.observe(requireActivity()){ state ->
             if(state.relogined){
                 viewModel.fetchContingent()
+            }
+
+            state.contingentList?.let {
+                if(!isAdded) return@let
+                if(!state.noDataIsShowing){
+                    childFragmentManager.beginTransaction()
+                        .replace(binding.movContainer.id, ContingentPlotsFragment())
+                        .commit()
+                }
             }
         }
     }

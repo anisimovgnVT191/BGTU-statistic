@@ -50,7 +50,7 @@ class PerformanceFragment : Fragment() {
             viewModel.updateToken()
         }
         childFragmentManager.beginTransaction()
-            .replace(binding.perfContainer.id, PerformancePlotsFragment())
+            .replace(binding.perfContainer.id, NoDataFragment())
             .commit()
 
         return binding.root
@@ -61,6 +61,14 @@ class PerformanceFragment : Fragment() {
         viewModel.uiState.observe(requireActivity()){ state ->
             if(state.relogined){
                 viewModel.fetchDebts()
+            }
+            state.debtsList?.let {
+                if(!isAdded) return@let
+                if(!state.noDataIsShowing){
+                    childFragmentManager.beginTransaction()
+                        .replace(binding.perfContainer.id, PerformancePlotsFragment())
+                        .commit()
+                }
             }
         }
     }

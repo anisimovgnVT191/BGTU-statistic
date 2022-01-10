@@ -44,7 +44,8 @@ class ContingentViewModel(
                     relogined = false,
                     contingentList = response.body(),
                     decreaseTypes = decreaseTypes,
-                    increaseTypes = increaseTypes)
+                    increaseTypes = increaseTypes,
+                    noDataIsShowing = false)
             }
         }
     }
@@ -107,7 +108,8 @@ class ContingentViewModel(
             relogined = relogin,
             contingentList = uiState.value?.contingentList,
             decreaseTypes = uiState.value?.decreaseTypes,
-            increaseTypes = uiState.value?.increaseTypes
+            increaseTypes = uiState.value?.increaseTypes,
+            noDataIsShowing = uiState.value?.noDataIsShowing?:true
         )
     }
     override fun onCleared() {

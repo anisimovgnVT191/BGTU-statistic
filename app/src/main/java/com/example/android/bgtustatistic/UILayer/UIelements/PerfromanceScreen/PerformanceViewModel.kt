@@ -39,7 +39,10 @@ class PerformanceViewModel(
 
             }
             if(response.isSuccessful){
-                _uiState.value = PerformanceState(relogined = false, debtsList = response.body())
+                _uiState.value = PerformanceState(
+                    relogined = false,
+                    debtsList = response.body(),
+                    noDataIsShowing = false)
                 Log.e("Performance", response.message() + response.code().toString())
             }
             else{
@@ -71,7 +74,8 @@ class PerformanceViewModel(
     private fun updateStateByRelogin(relogin: Boolean){
         _uiState.value = PerformanceState(
             relogined = relogin,
-            debtsList = uiState.value?.debtsList
+            debtsList = uiState.value?.debtsList,
+            noDataIsShowing = uiState.value?.noDataIsShowing?:true
         )
     }
     override fun onCleared() {

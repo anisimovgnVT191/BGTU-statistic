@@ -4,5 +4,6 @@ import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.
 
 data class PerformanceState(
     val relogined: Boolean,
-    val debtsList: List<DepartmentDebt>? = null
+    val debtsList: List<DepartmentDebt>? = null,
+    val noDataIsShowing: Boolean = true
 )
