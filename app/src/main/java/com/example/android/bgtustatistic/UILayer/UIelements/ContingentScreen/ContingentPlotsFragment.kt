@@ -65,6 +65,7 @@ class ContingentPlotsFragment : Fragment() {
                     )
                     .addToBackStack(null)
                     .commit()
+
             }
             enrolledDetailsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()

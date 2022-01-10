@@ -41,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
+            if(supportFragmentManager.backStackEntryCount > 0){
+                supportFragmentManager.popBackStackImmediate()
+            }
             when(item.itemId){
                 R.id.movement -> {
                     supportFragmentManager.beginTransaction()
