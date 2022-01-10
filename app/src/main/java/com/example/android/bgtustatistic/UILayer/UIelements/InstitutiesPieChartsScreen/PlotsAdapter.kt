@@ -1,13 +1,13 @@
-package com.example.android.bgtustatistic.UILayer
+package com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FilterQueryProvider
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.init
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.ColorTemplate
 
 class PlotsAdapter(
     private val dataset: Array<PieDataSet>,
@@ -40,7 +39,6 @@ class PlotsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pieDataSet = dataset[position]
         holder.instShortName.text = pieDataSet.label
-        pieDataSet.label = null
         pieDataSet.colors = pieChartColors
         pieDataSet.valueTextColor = Color.WHITE
         pieDataSet.valueTextSize = 12F

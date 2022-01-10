@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.UILayer;
+package com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils;
 
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;

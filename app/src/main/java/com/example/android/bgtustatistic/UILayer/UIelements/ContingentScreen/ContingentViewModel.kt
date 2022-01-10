@@ -23,10 +23,10 @@ class ContingentViewModel(
     private val _uiState = MutableLiveData(ContingentState(false, contingentList = null, null, null))
     val uiState: LiveData<ContingentState> = _uiState
 
-    private val fetchContingentJob: Job? = null
+    private var fetchContingentJob: Job? = null
     fun fetchContingent(){
         fetchContingentJob?.cancel()
-        viewModelScope.launch {
+        fetchContingentJob = viewModelScope.launch {
             val decreaseTypes = fetchDecreaseTypes()
             val increaseTypes = fetchIncreaseTypes()
             val user = UserManager.getUser()
@@ -45,15 +45,16 @@ class ContingentViewModel(
                     contingentList = response.body(),
                     decreaseTypes = decreaseTypes,
                     increaseTypes = increaseTypes,
-                    noDataIsShowing = false)
+                    noDataIsShowing = false,
+                    firstStart = false)
             }
         }
     }
 
-    private val reloginJob: Job? = null
+    private var reloginJob: Job? = null
     fun updateToken(){
         reloginJob?.cancel()
-        viewModelScope.launch {
+        reloginJob = viewModelScope.launch {
             val user = UserManager.getUser()
             val response = try {
                 loginRepository.login(UserInfo(password = user.password!!, username = user.username!!))
@@ -86,9 +87,7 @@ class ContingentViewModel(
             emptyList()
     }
 
-    private var fetchITypesJob: Job? = null
     private suspend fun fetchIncreaseTypes(): List<MovementType>{
-        fetchITypesJob?.cancel()
         val user = UserManager.getUser()
         val response = try {
             contingentRepository.getIncreaseTypes("Bearer " + user.token!!)
@@ -109,7 +108,8 @@ class ContingentViewModel(
             contingentList = uiState.value?.contingentList,
             decreaseTypes = uiState.value?.decreaseTypes,
             increaseTypes = uiState.value?.increaseTypes,
-            noDataIsShowing = uiState.value?.noDataIsShowing?:true
+            noDataIsShowing = uiState.value?.noDataIsShowing?:true,
+            firstStart = false
         )
     }
     override fun onCleared() {

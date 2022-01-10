@@ -8,5 +8,6 @@ data class ContingentState(
     val contingentList: List<ContingentMovement>?,
     val decreaseTypes: List<MovementType>?,
     val increaseTypes: List<MovementType>?,
-    val noDataIsShowing: Boolean = true
+    val noDataIsShowing: Boolean = true,
+    val firstStart: Boolean = true
 )

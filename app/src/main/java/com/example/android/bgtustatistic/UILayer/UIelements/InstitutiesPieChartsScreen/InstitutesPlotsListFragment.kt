@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.UILayer.UIelements
+package com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentApi
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
-import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.Contingent
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
@@ -20,7 +19,6 @@ import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteD
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.PlotsAdapter
 import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.ContingentViewModel
 import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.ContingentViewModelFactory
 import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceViewModel

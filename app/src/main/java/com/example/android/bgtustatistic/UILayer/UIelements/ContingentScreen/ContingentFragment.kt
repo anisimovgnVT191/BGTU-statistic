@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.distinctUntilChanged
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentApi
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
@@ -38,7 +39,7 @@ class ContingentFragment : Fragment() {
             )
         )
     }
-
+    private var isNoDataDisplaying = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,28 +55,37 @@ class ContingentFragment : Fragment() {
                 showSettingsBottomSheet()
             }
         }
-
-        childFragmentManager.beginTransaction()
-            .replace(binding.movContainer.id, NoDataFragment())
-            .commit()
+        viewModel.uiState.value?.contingentList?.let {
+            isNoDataDisplaying = false
+            childFragmentManager.beginTransaction()
+                .replace(binding.movContainer.id, ContingentPlotsFragment())
+                .commit()
+        }?:let {
+            isNoDataDisplaying = true
+            childFragmentManager.beginTransaction()
+                .replace(binding.movContainer.id, NoDataFragment())
+                .commit()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.uiState.observe(requireActivity()){ state ->
+        viewModel.uiState.distinctUntilChanged().observe(requireActivity()){ state ->
             if(state.relogined){
                 viewModel.fetchContingent()
             }
-
             state.contingentList?.let {
                 if(!isAdded) return@let
-                if(!state.noDataIsShowing){
+                if(isNoDataDisplaying){
                     childFragmentManager.beginTransaction()
                         .replace(binding.movContainer.id, ContingentPlotsFragment())
                         .commit()
                 }
             }
+        }
+        viewModel.uiState.distinctUntilChanged().observe(requireActivity()){
+            Log.e("distinctLiveData", "here")
         }
     }
     override fun onDestroy() {

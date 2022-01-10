@@ -3,14 +3,11 @@ package com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.NumberPicker
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
@@ -21,15 +18,11 @@ import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtReposit
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.DepartmentDebt
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.R
-import com.example.android.bgtustatistic.UILayer.OnTouchReleaseListener
-import com.example.android.bgtustatistic.UILayer.UIelements.RecyclerTypes
-import com.example.android.bgtustatistic.UILayer.UIelements.InstitutesPlotsFragment
-import com.example.android.bgtustatistic.UILayer.makeOnlyBarsVisible
+import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.OnTouchReleaseListener
+import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.makeOnlyBarsVisible
 import com.example.android.bgtustatistic.databinding.FragmentPerformancePlotsBinding
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.ChartTouchListener
-import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlinx.coroutines.Dispatchers
 

@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.UILayer
+package com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils
 
 import android.view.MotionEvent
 import com.github.mikephil.charting.charts.BarChart

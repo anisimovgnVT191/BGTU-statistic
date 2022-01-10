@@ -1,4 +1,4 @@
-package com.example.android.bgtustatistic.UILayer.UIelements
+package com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen.RecyclerTypes
+import com.example.android.bgtustatistic.UILayer.UIelements.NoDataFragment
 import com.example.android.bgtustatistic.databinding.FragmentInstitutesPlotsBinding
 import com.github.mikephil.charting.data.PieDataSet
 
