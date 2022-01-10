@@ -57,7 +57,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_percentage_sign_svgrepo_24"
+                android:src="@drawable/ic_percent_outline"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -125,7 +125,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_percentage_sign_svgrepo_24"
+                android:src="@drawable/ic_percent_outline"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toTopOf="parent"
