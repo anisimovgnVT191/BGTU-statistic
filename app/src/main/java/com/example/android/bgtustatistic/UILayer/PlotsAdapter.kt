@@ -47,11 +47,18 @@ class PlotsAdapter(
         pieDataSet.valueFormatter = PercentFormatter(holder.pieChart)
         holder.pieChart.apply {
             data = PieData(pieDataSet)
+            centerText = """${resources.getString(R.string.pie_chart_center_text)}
+                |
+                |${data.yValueSum.toInt()}
+            """.trimMargin()
             init() //PieChartExtensions.kt
             setOnChartValueSelectedListener(
                 object : OnChartValueSelectedListener{
                     override fun onNothingSelected() {
-                        centerText = ""
+                        centerText = """${resources.getString(R.string.pie_chart_center_text)}
+                            |
+                            |${data.yValueSum.toInt()}
+                        """.trimMargin()
                     }
 
                     override fun onValueSelected(e: Entry?, h: Highlight?) {
