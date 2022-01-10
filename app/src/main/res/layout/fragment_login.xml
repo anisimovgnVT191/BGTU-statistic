@@ -46,6 +46,8 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:maxLength="20"
+            android:inputType="text"
+            android:imeOptions="actionNext"
             android:textCursorDrawable="@drawable/light_blue_cursor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
