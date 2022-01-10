@@ -6,6 +6,7 @@ import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.M
 data class ContingentState(
     val relogined: Boolean,
     val contingentList: List<ContingentMovement>?,
+    val contingentListFiltered: List<ContingentMovement>?,
     val decreaseTypes: List<MovementType>?,
     val increaseTypes: List<MovementType>?,
     val noDataIsShowing: Boolean = true,

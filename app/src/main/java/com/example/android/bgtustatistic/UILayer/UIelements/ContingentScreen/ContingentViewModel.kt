@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
+import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.ContingentMovement
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.MovementType
-import com.example.android.bgtustatistic.DataLayer.LoginFeature.DataModels.Token
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.DataModels.UserInfo
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
@@ -20,12 +20,22 @@ class ContingentViewModel(
     private val contingentRepository: ContingentRepository,
     private val loginRepository: LoginRepository
 ): ViewModel() {
-    private val _uiState = MutableLiveData(ContingentState(false, contingentList = null, null, null))
+    private val _uiState = MutableLiveData(ContingentState(false, contingentList = null, null, null, null))
     val uiState: LiveData<ContingentState> = _uiState
-
+    var yearFilterValue = 2021
+    var semesterFilterValue = SemesterFilter.all
     private var fetchContingentJob: Job? = null
     fun fetchContingent(){
         fetchContingentJob?.cancel()
+        uiState.value?.contingentListFiltered?.let {
+            if(!uiState.value?.relogined!!) {
+                _uiState.value = uiState.value
+                return
+            }else{
+                yearFilterValue = 2021
+                semesterFilterValue = SemesterFilter.all
+            }
+        }
         fetchContingentJob = viewModelScope.launch {
             val decreaseTypes = fetchDecreaseTypes()
             val increaseTypes = fetchIncreaseTypes()
@@ -43,6 +53,7 @@ class ContingentViewModel(
                 _uiState.value = ContingentState(
                     relogined = false,
                     contingentList = response.body(),
+                    contingentListFiltered = null,
                     decreaseTypes = decreaseTypes,
                     increaseTypes = increaseTypes,
                     noDataIsShowing = false,
@@ -51,6 +62,39 @@ class ContingentViewModel(
         }
     }
 
+    private var filterJob: Job? = null
+    fun filterContingent(){
+        filterJob?.cancel()
+        filterJob = viewModelScope.launch {
+            val result = emptyList<ContingentMovement>().toMutableList()
+
+            uiState.value?.contingentList?.forEach { contingentMovement ->
+                val listContingent = contingentMovement.contingent
+                    .filter { (SemesterFilter.semesterFromMonthNumber(it.month) == semesterFilterValue
+                            || semesterFilterValue == SemesterFilter.all) &&
+                        it.year == yearFilterValue
+                    }
+                if(listContingent.isNotEmpty())
+                    result.add(
+                        ContingentMovement(
+                            contingent = listContingent,
+                            name_department = contingentMovement.name_department,
+                            short_name_department = contingentMovement.short_name_department
+                        )
+                )
+            }
+            if (result.isNotEmpty())
+                _uiState.value = ContingentState(
+                    relogined = false,
+                    contingentList = uiState.value?.contingentList,
+                    contingentListFiltered = result,
+                    decreaseTypes = uiState.value?.decreaseTypes,
+                    increaseTypes = uiState.value?.increaseTypes,
+                    noDataIsShowing = false,
+                    firstStart = false
+                )
+        }
+    }
     private var reloginJob: Job? = null
     fun updateToken(){
         reloginJob?.cancel()
@@ -106,6 +150,7 @@ class ContingentViewModel(
         _uiState.value = ContingentState(
             relogined = relogin,
             contingentList = uiState.value?.contingentList,
+            contingentListFiltered = uiState.value?.contingentListFiltered,
             decreaseTypes = uiState.value?.decreaseTypes,
             increaseTypes = uiState.value?.increaseTypes,
             noDataIsShowing = uiState.value?.noDataIsShowing?:true,
@@ -116,5 +161,6 @@ class ContingentViewModel(
         super.onCleared()
         fetchContingentJob?.cancel()
         reloginJob?.cancel()
+        filterJob?.cancel()
     }
 }

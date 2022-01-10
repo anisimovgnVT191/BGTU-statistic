@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentApi
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
+import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.ContingentMovement
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
@@ -71,10 +72,12 @@ class InstitutesPlotsListFragment : Fragment() {
             }
         }
     }
-    private fun generatePieDataSetEnrolled(): Array<PieDataSet>{
+    private fun generatePieDataSetEnrolled(
+        listContingentMovement: List<ContingentMovement>
+    ): Array<PieDataSet>{
         val result = emptyList<PieDataSet>().toMutableList()
         contingentViewModel.uiState.value?.let { state ->
-            state.contingentList?.forEach { contingentMovement ->
+            listContingentMovement.forEach { contingentMovement ->
                 val entries = ArrayList<PieEntry>()
                 val increasecontingentSetMap = contingentMovement.contingent
                     .map { it.increasecontingent_set }.flatten().groupBy { it.type }
@@ -98,10 +101,12 @@ class InstitutesPlotsListFragment : Fragment() {
         Log.e("entries", result.size.toString())
         return Array(size = result.size) { i -> result[i] }
     }
-    private fun generatePieDataSetDeducted(): Array<PieDataSet>{
+    private fun generatePieDataSetDeducted(
+        listContingentMovement: List<ContingentMovement>
+    ): Array<PieDataSet>{
         val result = emptyList<PieDataSet>().toMutableList()
         contingentViewModel.uiState.value?.let { state ->
-            state.contingentList?.forEach { contingentMovement ->
+            listContingentMovement.forEach { contingentMovement ->
                 val entries = ArrayList<PieEntry>()
                 val decreasecontingentSetMap = contingentMovement.contingent
                     .map { it.decreasecontingent_set }.flatten().groupBy { it.type }
@@ -139,10 +144,12 @@ class InstitutesPlotsListFragment : Fragment() {
         )
         binding.plotsRecycler.apply {
             layoutManager = LinearLayoutManager(requireActivity())
+            val listContingentMovement = contingentViewModel.uiState.value?.contingentListFiltered
+                ?:contingentViewModel.uiState.value?.contingentList!!
             if(recyclerType!! == RecyclerTypes.Enrolled)
-                adapter = PlotsAdapter(generatePieDataSetEnrolled(), pieChartColors)
+                adapter = PlotsAdapter(generatePieDataSetEnrolled(listContingentMovement), pieChartColors)
             if(recyclerType!! == RecyclerTypes.Deducted)
-                adapter = PlotsAdapter(generatePieDataSetDeducted(), pieChartColors)
+                adapter = PlotsAdapter(generatePieDataSetDeducted(listContingentMovement), pieChartColors)
         }
         return binding.root
     }

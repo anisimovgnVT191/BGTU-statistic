@@ -84,6 +84,10 @@ class ContingentPlotsFragment : Fragment() {
                     drawBarChartDeducted(it)
                     drawBarCharEnrolled(it)
             }
+            state.contingentListFiltered?.let {
+                drawBarChartDeducted(it)
+                drawBarCharEnrolled(it)
+            }
         }
     }
     private fun initBarCharts(){
