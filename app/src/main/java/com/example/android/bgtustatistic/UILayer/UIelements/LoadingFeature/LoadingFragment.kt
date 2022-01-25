@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
@@ -13,6 +14,8 @@ import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.UIelements.LoginFeature.LoginFragment
 import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.FragmentLoadingBinding
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +52,7 @@ class LoadingFragment : Fragment() {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, PerformanceFragment())
                             .commit()
-                        findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
+                        makeBarsVisible(this)
                     }
                 }else{
                     requireActivity().supportFragmentManager.beginTransaction()
@@ -61,6 +64,14 @@ class LoadingFragment : Fragment() {
         }
     }
 
+    private fun makeBarsVisible(activity: FragmentActivity){
+        activity.apply {
+            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+            bottomNav.selectedItemId = R.id.performance
+            bottomNav.visibility = View.VISIBLE
+            findViewById<AppBarLayout>(R.id.top_bar_container).visibility = View.VISIBLE
+        }
+    }
     override fun onResume() {
         super.onResume()
         viewModel.userIsCashed()

@@ -47,4 +47,5 @@
     <string name="barchart_color_gradient_end" translatable="false">#FFC5EC</string>
     <string name="barchart_color_gradien_start" translatable="false">#FF79AF</string>
     <string name="pie_chart_center_text">Total</string>
+    <string name="settings_title">Settings</string>
 </resources>

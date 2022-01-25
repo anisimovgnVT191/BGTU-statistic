@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
@@ -13,6 +14,7 @@ import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilde
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.FragmentLoginBinding
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 
@@ -66,12 +68,18 @@ class LoginFragment : Fragment() {
         }
     private fun loginSuccessful(){
         requireActivity().run {
-            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, PerformanceFragment())
                 .commit()
+            makeBarsVisible(this)
+        }
+    }
+    private fun makeBarsVisible(activity: FragmentActivity){
+        activity.apply {
+            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
             bottomNav.selectedItemId = R.id.performance
             bottomNav.visibility = View.VISIBLE
+            findViewById<AppBarLayout>(R.id.top_bar_container).visibility = View.VISIBLE
         }
     }
     private fun initViewModel(){
