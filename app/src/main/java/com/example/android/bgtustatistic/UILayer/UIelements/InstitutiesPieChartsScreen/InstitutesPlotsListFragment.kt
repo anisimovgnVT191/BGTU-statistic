@@ -1,5 +1,6 @@
 package com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.C
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
+import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.DepartmentDebtFull
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtApi
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
@@ -63,6 +65,19 @@ class InstitutesPlotsListFragment : Fragment() {
                 ioDispatcher = Dispatchers.IO
             ))
         )
+    }
+
+    private lateinit var  pieChartColors: List<Int>
+    private lateinit var pieLabels: Array<String>
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        pieChartColors = listOf(
+            resources.getColor(R.color.piechart_slice1),
+            resources.getColor(R.color.piechart_slice2),
+            resources.getColor(R.color.piechart_slice3),
+            resources.getColor(R.color.piechart_slice4)
+        )
+        pieLabels = resources.getStringArray(R.array.count_debts)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,30 +145,60 @@ class InstitutesPlotsListFragment : Fragment() {
         Log.e("entries", result.size.toString())
         return Array(size = result.size) { i -> result[i] }
     }
+    private fun generatePieDataSetPerformance(
+        list: List<DepartmentDebtFull>
+    ):Array<PieDataSet>{
+        val result = emptyList<PieDataSet>().toMutableList()
+
+        list.forEach { department ->
+            val entries = ArrayList<PieEntry>()
+            department.number_depts.forEach {
+                entries.add(
+                    PieEntry(
+                        it.count_students.toFloat()?:0F,
+                        when(it.count_depts){
+                            1 -> "${pieLabels[0]}\n"
+                            2 -> "${pieLabels[1]}\n"
+                            3 -> "${pieLabels[2]}\n"
+                            4 -> "${pieLabels[3]}\n"
+                            5 -> "${pieLabels[4]}\n"
+                            else -> "Unknown\n"
+                        }
+                    )
+                )
+            }
+            result.add(PieDataSet(entries, department.short_name))
+        }
+        return Array(size = result.size) { i -> result[i] }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInstitutesPlotsListBinding.inflate(inflater)
         binding = _binding!!
-        val pieChartColors = listOf(
-            resources.getColor(R.color.piechart_slice1),
-            resources.getColor(R.color.piechart_slice2),
-            resources.getColor(R.color.piechart_slice3),
-            resources.getColor(R.color.piechart_slice4)
-        )
+
         binding.plotsRecycler.apply {
             layoutManager = LinearLayoutManager(requireActivity())
             val listContingentMovement = contingentViewModel.uiState.value?.contingentListFiltered
-                ?:contingentViewModel.uiState.value?.contingentList!!
+                ?:contingentViewModel.uiState.value?.contingentList
             if(recyclerType!! == RecyclerTypes.Enrolled)
-                adapter = PlotsAdapter(generatePieDataSetEnrolled(listContingentMovement), pieChartColors)
+                adapter = PlotsAdapter(generatePieDataSetEnrolled(listContingentMovement!!), pieChartColors)
             if(recyclerType!! == RecyclerTypes.Deducted)
-                adapter = PlotsAdapter(generatePieDataSetDeducted(listContingentMovement), pieChartColors)
+                adapter = PlotsAdapter(generatePieDataSetDeducted(listContingentMovement!!), pieChartColors)
         }
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        performanceViewModel.uiState.observe(requireActivity()){ state ->
+            state.debtsByIdList?.let {
+                binding.plotsRecycler.adapter = PlotsAdapter(generatePieDataSetPerformance(it), pieChartColors)
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

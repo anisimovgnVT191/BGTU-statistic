@@ -25,4 +25,9 @@
     <string name="server_side_problem">Ошибка сервера</string>
     <string name="empty_fields">Проверьте правильность заполненных полей</string>
     <string name="pie_chart_center_text">Всего</string>
+    <string name="count_debts_1">1 сессия</string>
+    <string name="count_debts_2">2 сессии</string>
+    <string name="count_debts_3">3 сессии</string>
+    <string name="count_debts_4">4 сессии</string>
+    <string name="count_debts_5">Более 5 сессий</string>
 </resources>

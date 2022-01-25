@@ -20,6 +20,8 @@ import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilde
 import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.OnTouchReleaseListener
 import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.makeOnlyBarsVisible
+import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen.InstitutesPlotsFragment
+import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen.RecyclerTypes
 import com.example.android.bgtustatistic.databinding.FragmentPerformancePlotsBinding
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
@@ -54,14 +56,17 @@ class PerformancePlotsFragment : Fragment() {
 
         initBarChartLayout()
 
-//        binding.arrearsCard.setOnClickListener {
-//            requireActivity().supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container,
-//                    InstitutesPlotsFragment.newInstance(RecyclerTypes.Performance, generatePieDataset())
-//                )
-//                .addToBackStack(null)
-//                .commit()
-//        }
+        binding.arrearsCard.setOnClickListener {
+            viewModel.fetchDebtsById(
+                viewModel.uiState.value!!.debtsList!!.filter { it.count_depts != 0 }.map { it.id }
+            )
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container,
+                    InstitutesPlotsFragment.newInstance(RecyclerTypes.Performance)
+                )
+                .addToBackStack(null)
+                .commit()
+        }
         return binding.root
     }
 

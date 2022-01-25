@@ -13,6 +13,18 @@
         <item>@string/spinner_1_sem</item>
         <item>@string/spinner_2_sem</item>
     </string-array>
+    <string-array name="count_debts">
+        <item>@string/count_debts_1</item>
+        <item>@string/count_debts_2</item>
+        <item>@string/count_debts_3</item>
+        <item>@string/count_debts_4</item>
+        <item>@string/count_debts_5</item>
+    </string-array>
+    <string name="count_debts_1">1 session</string>
+    <string name="count_debts_2">2 sessions</string>
+    <string name="count_debts_3">3 sessions</string>
+    <string name="count_debts_4">4 sessions</string>
+    <string name="count_debts_5">More than 5 sessions</string>
     <string name="spinner_all">All</string>
     <string name="spinner_1_sem">1st Semester</string>
     <string name="spinner_2_sem">2nd Semester</string>
