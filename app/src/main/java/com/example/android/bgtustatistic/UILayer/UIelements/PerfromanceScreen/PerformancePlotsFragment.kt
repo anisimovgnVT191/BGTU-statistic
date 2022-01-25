@@ -107,9 +107,10 @@ class PerformancePlotsFragment : Fragment() {
     private fun drawBarChart(list: List<DepartmentDebt>){
         val entries = ArrayList<BarEntry>()
 
-        list.forEachIndexed { index, data ->
+        list.filter { it.count_depts != 0 }.forEachIndexed{index, data ->
             entries.add(BarEntry(index.toFloat(), data.count_depts.toFloat(), data))
         }
+
         val dataSet = BarDataSet(entries, null)
         dataSet.setGradientColor(
             Color.parseColor(
