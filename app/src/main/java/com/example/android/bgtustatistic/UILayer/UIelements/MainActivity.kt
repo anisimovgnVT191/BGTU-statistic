@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,53 +14,21 @@ import com.example.android.bgtustatistic.R
 import com.example.android.bgtustatistic.UILayer.UIelements.ContingentScreen.ContingentFragment
 import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformanceFragment
 import com.example.android.bgtustatistic.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.textfield.TextInputEditText
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     private var binding_: ActivityMainBinding? = null
     private lateinit var binding: ActivityMainBinding
-
+    private var contingentFragment: ContingentFragment? = null
+    private var performanceFragment: PerformanceFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding_ = ActivityMainBinding.inflate(layoutInflater)
         binding = binding_!!
         setContentView(binding.root)
-
-
-        UserManager.currentUser?. let {
-            if(it.isValid()){
-                binding.bottomNavigation.visibility = View.VISIBLE
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, PerformanceFragment())
-                    .commit()
-            }
-        }?:let {
-            binding.bottomNavigation.visibility = View.GONE
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, LoadingFragment())
-                .commit()
-        }
-
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            if(supportFragmentManager.backStackEntryCount > 0){
-                supportFragmentManager.popBackStackImmediate()
-            }
-            when(item.itemId){
-                R.id.movement -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, ContingentFragment())
-                        .commit()
-                    return@setOnItemSelectedListener true
-                }
-                R.id.performance -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, PerformanceFragment())
-                        .commit()
-                    return@setOnItemSelectedListener true
-                }
-                else -> return@setOnItemSelectedListener false
-            }
-        }
+        setLoadingFragment()
+        binding.bottomNavigation.setOnItemSelectedListener(this)
     }
 
     override fun onDestroy() {
@@ -83,5 +52,38 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
+    }
+    private fun setLoadingFragment(){
+        binding.bottomNavigation.visibility = View.GONE
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, LoadingFragment())
+            .commit()
+    }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if(supportFragmentManager.backStackEntryCount > 0){
+            supportFragmentManager.popBackStackImmediate()
+        }
+        return when(item.itemId){
+            R.id.movement -> {
+
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, contingentFragment?:let {
+                        contingentFragment = ContingentFragment()
+                        contingentFragment!!
+                    })
+                    .commit()
+                true
+            }
+            R.id.performance -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, performanceFragment?:let {
+                        performanceFragment = PerformanceFragment()
+                        performanceFragment!!
+                    })
+                    .commit()
+                true
+            }
+            else -> false
+        }
     }
 }
