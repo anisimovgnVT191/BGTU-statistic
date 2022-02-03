@@ -9,13 +9,31 @@
     android:layout_height="match_parent"
     tools:context=".UILayer.UIelements.ContingentScreen.ContingentPlotsFragment">
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:text="@string/contingent_year"
-        android:layout_marginBottom="24dp"/>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/year_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:gravity="end"
+            tools:text="2021 year"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/semester_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:layout_weight="1"
+            tools:text="1st Semester"
+            android:layout_marginBottom="24dp"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

@@ -16,7 +16,6 @@ import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataS
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.RetrofitBuilder.ServiceBuilder
 import com.example.android.bgtustatistic.UILayer.UIelements.NoDataFragment
-import com.example.android.bgtustatistic.UILayer.UIelements.PerfromanceScreen.PerformancePlotsFragment
 import com.example.android.bgtustatistic.databinding.FragmentMovementBinding
 import kotlinx.coroutines.Dispatchers
 
@@ -55,36 +54,44 @@ class ContingentFragment : Fragment() {
                 showSettingsBottomSheet()
             }
         }
-        viewModel.uiState.value?.contingentList?.let {
+        viewModel.uiStateContingent.value?.contingentList?.let {
             isNoDataDisplaying = false
-            childFragmentManager.beginTransaction()
-                .replace(binding.movContainer.id, ContingentPlotsFragment())
-                .commit()
+            setFragment(ContingentPlotsFragment())
         }?:let {
             isNoDataDisplaying = true
-            childFragmentManager.beginTransaction()
-                .replace(binding.movContainer.id, NoDataFragment())
-                .commit()
+            setFragment(NoDataFragment())
         }
         return binding.root
+    }
+    private fun setFragment(fragment: Fragment){
+        childFragmentManager.beginTransaction()
+            .replace(binding.movContainer.id, fragment)
+            .commit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.uiState.distinctUntilChanged().observe(requireActivity()){ state ->
+        viewModel.uiStateContingent.distinctUntilChanged().observe(requireActivity()){ state ->
             if(state.relogined){
                 viewModel.fetchContingent()
             }
             state.contingentList?.let {
                 if(!isAdded) return@let
-                if(isNoDataDisplaying){
-                    childFragmentManager.beginTransaction()
-                        .replace(binding.movContainer.id, ContingentPlotsFragment())
-                        .commit()
+                if(state.contingentListFiltered?.isEmpty() == true){
+                    isNoDataDisplaying = true
+                    setFragment(NoDataFragment())
                 }
+                else
+                    if(isNoDataDisplaying){
+                        isNoDataDisplaying = false
+                        setFragment(ContingentPlotsFragment())
+                    }
             }
         }
-        viewModel.uiState.distinctUntilChanged().observe(requireActivity()){
+        viewModel.uiStateSettings.distinctUntilChanged().observe(requireActivity()){state ->
+            viewModel.filterContingent()
+        }
+        viewModel.uiStateContingent.distinctUntilChanged().observe(requireActivity()){
             Log.e("distinctLiveData", "here")
         }
     }

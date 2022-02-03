@@ -5,35 +5,55 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
+import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.Contingent
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.ContingentMovement
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.MovementType
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.DataModels.UserInfo
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.UILayer.StateHolders.ContingentScreen.ContingentState
+import com.example.android.bgtustatistic.UILayer.StateHolders.ContingentScreen.SettingsState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
 
 class ContingentViewModel(
     private val contingentRepository: ContingentRepository,
     private val loginRepository: LoginRepository
 ): ViewModel() {
-    private val _uiState = MutableLiveData(ContingentState(false, contingentList = null, null, null, null))
-    val uiState: LiveData<ContingentState> = _uiState
-    var yearFilterValue = 2021
-    var semesterFilterValue = SemesterFilter.all
+    private val _uiStateContingent = MutableLiveData(
+        ContingentState(
+            relogined = false,
+            contingentList = null,
+            contingentListFiltered = null,
+            decreaseTypes = null,
+            increaseTypes = null)
+    )
+    val uiStateContingent: LiveData<ContingentState> = _uiStateContingent
+
+    private val _uiStateSettings = MutableLiveData(SettingsState())
+    val uiStateSettings: LiveData<SettingsState> = _uiStateSettings
+
+//    var yearFilterValue = Calendar.getInstance().get(Calendar.YEAR)
+//    var semesterFilterValue = SemesterFilter.all
+
+    fun updateSettingsState(year: Int, semester: SemesterFilter){
+        _uiStateSettings.value = SettingsState(
+            yearFilter = year,
+            semesterFilter = semester
+        )
+    }
     private var fetchContingentJob: Job? = null
     fun fetchContingent(){
         fetchContingentJob?.cancel()
-        uiState.value?.contingentListFiltered?.let {
-            if(!uiState.value?.relogined!!) {
-                _uiState.value = uiState.value
+        uiStateContingent.value?.contingentListFiltered?.let {
+            if(!uiStateContingent.value?.relogined!!) {
+                _uiStateContingent.value = uiStateContingent.value
                 return
             }else{
-                yearFilterValue = 2021
-                semesterFilterValue = SemesterFilter.all
+                _uiStateSettings.value = SettingsState()
             }
         }
         fetchContingentJob = viewModelScope.launch {
@@ -50,7 +70,7 @@ class ContingentViewModel(
                 return@launch
             }
             if(response.isSuccessful){
-                _uiState.value = ContingentState(
+                _uiStateContingent.value = ContingentState(
                     relogined = false,
                     contingentList = response.body(),
                     contingentListFiltered = null,
@@ -61,19 +81,22 @@ class ContingentViewModel(
             }
         }
     }
-
+    private val filterYearSemester: (Contingent) -> Boolean = {contingent ->
+        with(uiStateSettings.value!!){
+            (SemesterFilter.semesterFromMonthNumber(contingent.month) == semesterFilter
+                    || semesterFilter == SemesterFilter.all) &&
+                    contingent.year == yearFilter
+        }
+    }
     private var filterJob: Job? = null
     fun filterContingent(){
         filterJob?.cancel()
         filterJob = viewModelScope.launch {
             val result = emptyList<ContingentMovement>().toMutableList()
 
-            uiState.value?.contingentList?.forEach { contingentMovement ->
+            uiStateContingent.value?.contingentList?.forEach { contingentMovement ->
                 val listContingent = contingentMovement.contingent
-                    .filter { (SemesterFilter.semesterFromMonthNumber(it.month) == semesterFilterValue
-                            || semesterFilterValue == SemesterFilter.all) &&
-                        it.year == yearFilterValue
-                    }
+                    .filter(filterYearSemester)
                 if(listContingent.isNotEmpty())
                     result.add(
                         ContingentMovement(
@@ -84,14 +107,15 @@ class ContingentViewModel(
                 )
             }
             if (result.isNotEmpty())
-                _uiState.value = ContingentState(
+                _uiStateContingent.value = uiStateContingent.value!!.copy(
                     relogined = false,
-                    contingentList = uiState.value?.contingentList,
                     contingentListFiltered = result,
-                    decreaseTypes = uiState.value?.decreaseTypes,
-                    increaseTypes = uiState.value?.increaseTypes,
                     noDataIsShowing = false,
                     firstStart = false
+                )
+            else
+                _uiStateContingent.value = uiStateContingent.value!!.copy(
+                    contingentListFiltered = emptyList()
                 )
         }
     }
@@ -147,13 +171,9 @@ class ContingentViewModel(
     }
 
     private fun updateStateByRelogin(relogin: Boolean){
-        _uiState.value = ContingentState(
+        _uiStateContingent.value = uiStateContingent.value!!.copy(
             relogined = relogin,
-            contingentList = uiState.value?.contingentList,
-            contingentListFiltered = uiState.value?.contingentListFiltered,
-            decreaseTypes = uiState.value?.decreaseTypes,
-            increaseTypes = uiState.value?.increaseTypes,
-            noDataIsShowing = uiState.value?.noDataIsShowing?:true,
+            contingentListFiltered = null,
             firstStart = false
         )
     }

@@ -91,7 +91,7 @@ class InstitutesPlotsListFragment : Fragment() {
         listContingentMovement: List<ContingentMovement>
     ): Array<PieDataSet>{
         val result = emptyList<PieDataSet>().toMutableList()
-        contingentViewModel.uiState.value?.let { state ->
+        contingentViewModel.uiStateContingent.value?.let { state ->
             listContingentMovement.forEach { contingentMovement ->
                 val entries = ArrayList<PieEntry>()
                 val increasecontingentSetMap = contingentMovement.contingent
@@ -101,7 +101,7 @@ class InstitutesPlotsListFragment : Fragment() {
                         ?.fold(0) { acc, increasecontingentSet ->
                             acc + increasecontingentSet.count_contingent
                         }
-                    val label = contingentViewModel.uiState.value?.increaseTypes?.find { it.id == key }
+                    val label = contingentViewModel.uiStateContingent.value?.increaseTypes?.find { it.id == key }
                     entries.add(
                         PieEntry(
                             count?.toFloat()?:0F,
@@ -120,7 +120,7 @@ class InstitutesPlotsListFragment : Fragment() {
         listContingentMovement: List<ContingentMovement>
     ): Array<PieDataSet>{
         val result = emptyList<PieDataSet>().toMutableList()
-        contingentViewModel.uiState.value?.let { state ->
+        contingentViewModel.uiStateContingent.value?.let { state ->
             listContingentMovement.forEach { contingentMovement ->
                 val entries = ArrayList<PieEntry>()
                 val decreasecontingentSetMap = contingentMovement.contingent
@@ -130,7 +130,7 @@ class InstitutesPlotsListFragment : Fragment() {
                         ?.fold(0) { acc, decreasecontingentSet ->
                             acc + decreasecontingentSet.count_contingent
                         }
-                    val label = contingentViewModel.uiState.value?.decreaseTypes?.find { it.id == key }
+                    val label = contingentViewModel.uiStateContingent.value?.decreaseTypes?.find { it.id == key }
                     entries.add(
                         PieEntry(
                             count?.toFloat()?:0F,
@@ -180,8 +180,8 @@ class InstitutesPlotsListFragment : Fragment() {
 
         binding.plotsRecycler.apply {
             layoutManager = LinearLayoutManager(requireActivity())
-            val listContingentMovement = contingentViewModel.uiState.value?.contingentListFiltered
-                ?:contingentViewModel.uiState.value?.contingentList
+            val listContingentMovement = contingentViewModel.uiStateContingent.value?.contingentListFiltered
+                ?:contingentViewModel.uiStateContingent.value?.contingentList
             if(recyclerType!! == RecyclerTypes.Enrolled)
                 adapter = PlotsAdapter(generatePieDataSetEnrolled(listContingentMovement!!), pieChartColors)
             if(recyclerType!! == RecyclerTypes.Deducted)

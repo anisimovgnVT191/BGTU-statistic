@@ -79,14 +79,23 @@ class ContingentPlotsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.uiState.distinctUntilChanged().observe(requireActivity()){ state ->
-            state.contingentList?.let {
-                    drawBarChartDeducted(it)
-                    drawBarCharEnrolled(it)
+        viewModel.uiStateContingent.distinctUntilChanged().observe(requireActivity()){ state ->
+            with(state){
+                if(contingentList!=null && contingentListFiltered==null)
+                    viewModel.filterContingent()
             }
             state.contingentListFiltered?.let {
                 drawBarChartDeducted(it)
                 drawBarCharEnrolled(it)
+            }
+        }
+        viewModel.uiStateSettings.distinctUntilChanged().observe(requireActivity()){state ->
+            if(!isAdded) return@observe
+            binding.yearText.text = "${state.yearFilter} ${requireActivity().resources.getString(R.string.year)}"
+            binding.semesterText.text = when(state.semesterFilter){
+                SemesterFilter.all -> ""
+                SemesterFilter.firstSemester -> requireActivity().resources.getString(R.string.spinner_1_sem)
+                SemesterFilter.secondSemester -> requireActivity().resources.getString(R.string.spinner_2_sem)
             }
         }
     }

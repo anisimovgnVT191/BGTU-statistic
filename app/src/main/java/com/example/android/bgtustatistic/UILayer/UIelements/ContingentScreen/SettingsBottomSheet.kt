@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentApi
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
@@ -21,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class SettingsBottomSheet: BottomSheetDialogFragment() {
     private var binding_: FragmentSettingsBottomSheetBinding? = null
@@ -41,6 +44,7 @@ class SettingsBottomSheet: BottomSheetDialogFragment() {
             )
         )
     }
+    private val yearSpinnerList = (2021..Calendar.getInstance()[Calendar.YEAR]).toList()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,14 +52,7 @@ class SettingsBottomSheet: BottomSheetDialogFragment() {
     ): View {
         binding_ = FragmentSettingsBottomSheetBinding.inflate(inflater)
         binding = binding_!!
-
-        binding.semesterSpinner.setSelection(
-            when(viewModel.semesterFilterValue){
-                SemesterFilter.all -> 0
-                SemesterFilter.firstSemester -> 1
-                SemesterFilter.secondSemester -> 2
-            }
-        )
+        setYearSpinnerEntries(yearSpinnerList)
         binding.exitButton.setOnClickListener {
             requireActivity().run{
                 lifecycleScope.launch {
@@ -71,19 +68,42 @@ class SettingsBottomSheet: BottomSheetDialogFragment() {
         return binding.root
     }
 
+    private fun setYearSpinnerEntries(list: List<Int>){
+        binding.yearSpinner.adapter = ArrayAdapter(
+            this.requireContext(),
+            android.R.layout.simple_spinner_item,
+            list.map { it.toString() }
+        ).apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.uiStateSettings.distinctUntilChanged().observe(requireActivity()){state ->
+            binding.semesterSpinner.setSelection(
+                when(state.semesterFilter){
+                    SemesterFilter.all -> 0
+                    SemesterFilter.firstSemester -> 1
+                    SemesterFilter.secondSemester -> 2
+                }
+            )
+            binding.yearSpinner.setSelection(
+                yearSpinnerList.indexOf(state.yearFilter)
+            )
+        }
+    }
     override fun dismiss() {
         super.dismiss()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.semesterFilterValue = when(binding.semesterSpinner.selectedItem.toString()){
-            resources.getString(R.string.spinner_1_sem) -> SemesterFilter.firstSemester
-            resources.getString(R.string.spinner_2_sem) -> SemesterFilter.secondSemester
-            else -> SemesterFilter.all
-        }
-        viewModel.yearFilterValue = binding.yearSpinner.selectedItem.toString().toIntOrNull()?:2021
-        viewModel.filterContingent()
+        viewModel.updateSettingsState(
+            year = binding.yearSpinner.selectedItem.toString().toInt(),
+            semester = when(binding.semesterSpinner.selectedItem.toString()){
+                resources.getString(R.string.spinner_1_sem) -> SemesterFilter.firstSemester
+                resources.getString(R.string.spinner_2_sem) -> SemesterFilter.secondSemester
+                else -> SemesterFilter.all
+            }
+        )
         binding_ = null
     }
 }
