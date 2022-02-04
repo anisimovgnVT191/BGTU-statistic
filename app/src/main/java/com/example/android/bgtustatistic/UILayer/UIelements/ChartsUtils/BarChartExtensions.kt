@@ -45,3 +45,4 @@ class OnTouchReleaseListener(
     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {}
     override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {}
 }
+

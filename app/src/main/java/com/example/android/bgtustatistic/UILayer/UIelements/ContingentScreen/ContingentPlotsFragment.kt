@@ -30,6 +30,7 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import java.math.RoundingMode
 
@@ -116,27 +117,35 @@ class ContingentPlotsFragment : Fragment() {
             }
         }
     }
+    inner class OnChartValueSelectedListenerImpl(
+        private val titleText: String,
+        private val shortNameTextView: MaterialTextView,
+        private val titleTextView: MaterialTextView
+    ):OnChartValueSelectedListener{
+        override fun onValueSelected(e: Entry?, h: Highlight?) {
+            shortNameTextView.text = (e?.data as ContingentMovement).short_name_department
+            titleTextView.text = e.y.toString()
+        }
+
+        override fun onNothingSelected() {
+            titleTextView.text = titleText
+            shortNameTextView.text = ""
+        }
+
+    }
     private fun initBarCharts(){
         binding.deductedBarchart.apply {
             setOnChartValueSelectedListener(
-                object : OnChartValueSelectedListener{
-                    override fun onNothingSelected() {
-                        binding.deductedTextview.text = getString(R.string.deducted)
-                        binding.deductedInsShortName.text = ""
-                    }
-
-                    override fun onValueSelected(e: Entry?, h: Highlight?) {
-                        binding.deductedInsShortName.text = (e?.data as ContingentMovement).short_name_department
-                        binding.deductedTextview.text = e.y.toString()
-                    }
-                }
-            )
+                OnChartValueSelectedListenerImpl(
+                    titleText = getString(R.string.deducted),
+                    shortNameTextView = binding.deductedInsShortName,
+                    titleTextView = binding.deductedTextview))
             onChartGestureListener = OnTouchReleaseListener { me, _ ->
                 me?.let {
                     if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
                         binding.apply {
                             deductedInsShortName.text = ""
-                            deductedTextview.text = getString(R.string.arrears)
+                            deductedTextview.text = getString(R.string.deducted)
                             isSelected = false
                             highlightValues(null)
                         }
@@ -146,24 +155,16 @@ class ContingentPlotsFragment : Fragment() {
         }
         binding.enrolledBarchart.apply {
             setOnChartValueSelectedListener(
-                object : OnChartValueSelectedListener{
-                    override fun onNothingSelected() {
-                        binding.enrolledTextview.text = getString(R.string.deducted)
-                        binding.enrolledShortName.text = ""
-                    }
-
-                    override fun onValueSelected(e: Entry?, h: Highlight?) {
-                        binding.enrolledShortName.text = (e?.data as ContingentMovement).short_name_department
-                        binding.enrolledTextview.text = e.y.toString()
-                    }
-                }
-            )
+                OnChartValueSelectedListenerImpl(
+                    titleText = getString(R.string.deducted),
+                    shortNameTextView = binding.enrolledShortName,
+                    titleTextView = binding.enrolledTextview))
             onChartGestureListener = OnTouchReleaseListener { me, _ ->
                 me?.let {
                     if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
                         binding.apply {
                             enrolledShortName.text = ""
-                            enrolledTextview.text = getString(R.string.arrears)
+                            enrolledTextview.text = getString(R.string.enrolled)
                             isSelected = false
                             highlightValues(null)
                         }
