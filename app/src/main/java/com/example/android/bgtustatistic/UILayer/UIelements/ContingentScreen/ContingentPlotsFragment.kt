@@ -13,7 +13,9 @@ import androidx.lifecycle.distinctUntilChanged
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentApi
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.ContingentRepository
+import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.Contingent
 import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.ContingentMovement
+import com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels.MovementSet
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginApi
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRemoteDataSource
 import com.example.android.bgtustatistic.DataLayer.LoginFeature.LoginRepository
@@ -24,6 +26,7 @@ import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieCharts
 import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen.InstitutesPlotsFragment
 import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.makeOnlyBarsVisible
 import com.example.android.bgtustatistic.databinding.FragmentContingentPlotsBinding
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -86,8 +89,21 @@ class ContingentPlotsFragment : Fragment() {
                     viewModel.filterContingent()
             }
             state.contingentListFiltered?.let {
-                drawBarChartDeducted(it)
-                drawBarCharEnrolled(it)
+                drawBarChart(
+                    list = it,
+                    gradientColors = Pair(
+                        first = Color.parseColor("#FFC5EC"),
+                        second = Color.parseColor("#FF79AF")),
+                    barChart = binding.deductedBarchart
+                ){ contingent ->  contingent.decreasecontingent_set }
+                drawBarChart(
+                    list = it,
+                    gradientColors = Pair(
+                        first = Color.parseColor("#7CCBED"),
+                        second =  Color.parseColor("#21A4E2")
+                    ),
+                    barChart = binding.enrolledBarchart
+                ) { contingent -> contingent.increasecontingent_set }
             }
         }
         viewModel.uiStateSettings.distinctUntilChanged().observe(requireActivity()){state ->
@@ -156,55 +172,32 @@ class ContingentPlotsFragment : Fragment() {
             }
         }
     }
-    private fun drawBarChartDeducted(list: List<ContingentMovement>){
+    private fun drawBarChart(
+        list: List<ContingentMovement>,
+        gradientColors: Pair<Int, Int>,
+        barChart: BarChart,
+        takeMovementSet: (Contingent) -> List<MovementSet>
+    ){
         val entries = ArrayList<BarEntry>()
         var xIndex = 0;
         list.forEachIndexed { index, data ->
-            val deducted = data.contingent.foldRight(0.0){contingent, acc ->
-                contingent.decreasecontingent_set.sumOf { it.percent } + acc
+            val movement = data.contingent.foldRight(0.0){ contingent, acc ->
+                takeMovementSet(contingent).sumOf { it.percent } + acc
             }
-           if(deducted != 0.0) {
-               ++xIndex
-               entries.add(BarEntry(xIndex.toFloat(), deducted.toFloat().roundToOneDecimal(), data))
-           }
-
-        }
-        Log.e("drawBarCharDeducted", entries.size.toString())
-        val dataSet = BarDataSet(entries, null)
-        dataSet.setGradientColor(Color.parseColor("#FFC5EC"), Color.parseColor("#FF79AF"))
-        dataSet.setDrawValues(false)
-        binding.deductedBarchart.run {
-            data = BarData(dataSet)
-            makeOnlyBarsVisible() //BarChartExtensions.kt
-        }
-        binding.deductedBarchart.invalidate()
-    }
-    private fun drawBarCharEnrolled(list: List<ContingentMovement>){
-        val entries = ArrayList<BarEntry>()
-        var xIndex = 0;
-        list.forEachIndexed { index, data ->
-            val enrolled = data.contingent.foldRight(0.0){ contingent, acc ->
-                contingent.increasecontingent_set.sumOf { it.percent } + acc
-            }
-            if(enrolled != 0.0){
+            if(movement != 0.0){
                 xIndex++;
-                entries.add(BarEntry(xIndex.toFloat(), enrolled.toFloat().roundToOneDecimal(), data))
+                entries.add(BarEntry(xIndex.toFloat(), movement.toFloat().roundToOneDecimal(), data))
             }
         }
         Log.e("drawBarCharEnrolled", entries.size.toString())
         val dataSet = BarDataSet(entries, null)
-        dataSet.setGradientColor(
-            Color.parseColor(
-                "#7CCBED"
-            ), Color.parseColor(
-                "#21A4E2"
-            ))
+        dataSet.setGradientColor(gradientColors.first, gradientColors.second)
         dataSet.setDrawValues(false)
-        binding.enrolledBarchart.run {
+        barChart.run {
             data = BarData(dataSet)
             makeOnlyBarsVisible() //BarChartExtensions.kt
         }
-        binding.enrolledBarchart.invalidate()
+        barChart.invalidate()
     }
     private fun Float.roundToOneDecimal() =
         this.toBigDecimal().setScale(1, RoundingMode.UP).toFloat()

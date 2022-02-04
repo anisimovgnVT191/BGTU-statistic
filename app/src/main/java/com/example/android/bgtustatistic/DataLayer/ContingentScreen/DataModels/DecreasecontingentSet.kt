@@ -1,9 +1,9 @@
 package com.example.android.bgtustatistic.DataLayer.ContingentScreen.DataModels
 
 data class DecreasecontingentSet(
-    val contingent: Int,
-    val count_contingent: Int,
-    val id: Int,
-    val percent: Double,
-    val type: Int
-)
+    override val contingent: Int,
+    override val count_contingent: Int,
+    override val id: Int,
+    override val percent: Double,
+    override val type: Int
+):MovementSet
