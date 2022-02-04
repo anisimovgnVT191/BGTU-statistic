@@ -23,9 +23,12 @@ import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.makeOnly
 import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen.InstitutesPlotsFragment
 import com.example.android.bgtustatistic.UILayer.UIelements.InstitutiesPieChartsScreen.RecyclerTypes
 import com.example.android.bgtustatistic.databinding.FragmentPerformancePlotsBinding
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 
 class PerformancePlotsFragment : Fragment() {
@@ -78,6 +81,28 @@ class PerformancePlotsFragment : Fragment() {
             }
         }
     }
+    inner class OnTouchReleaseListenerImpl(
+        private val titleText: String,
+        private val shortNameTextView: MaterialTextView,
+        private val titleTextView: MaterialTextView,
+        private val barChart: BarChart
+    ): OnTouchReleaseListener(){
+        override fun onChartGestureEnd(
+            me: MotionEvent?,
+            lastPerformedGesture: ChartTouchListener.ChartGesture?
+        ) {
+            me?.let {
+                if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
+                    binding.apply {
+                        shortNameTextView.text = ""
+                        titleTextView.text = titleText
+                        barChart.isSelected = false
+                        barChart.highlightValues(null)
+                    }
+                }
+            }
+        }
+    }
     @SuppressLint("ClickableViewAccessibility")
     private fun initBarChartLayout(){
         binding.performanceBarchart.apply {
@@ -94,19 +119,12 @@ class PerformancePlotsFragment : Fragment() {
                     }
                 }
             )
-            onChartGestureListener = OnTouchReleaseListener { me, _ ->
-                me?.let {
-                    if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
-                        binding.apply {
-                            perfInstShorName.text = ""
-                            arrearsTextview.text = getString(R.string.arrears)
-                            isSelected = false
-                            highlightValues(null)
-                        }
-                    }
-                }
-            }
-
+            onChartGestureListener = OnTouchReleaseListenerImpl(
+                titleText = getString(R.string.arrears),
+                shortNameTextView = binding.perfInstShorName,
+                titleTextView = binding.arrearsTextview,
+                barChart = this
+            )
         }
     }
     private fun drawBarChart(list: List<DepartmentDebt>){

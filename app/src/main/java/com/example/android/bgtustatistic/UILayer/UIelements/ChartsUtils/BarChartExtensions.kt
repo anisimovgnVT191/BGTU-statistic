@@ -20,18 +20,16 @@ fun BarChart.makeOnlyBarsVisible(){
     isDoubleTapToZoomEnabled = false
 }
 
-class OnTouchReleaseListener(
-    private val onChartGestureEndBlock: (MotionEvent?, ChartTouchListener.ChartGesture?) -> Unit
-): OnChartGestureListener{
+abstract class OnTouchReleaseListener(): OnChartGestureListener{
     override fun onChartGestureStart(
         me: MotionEvent?,
         lastPerformedGesture: ChartTouchListener.ChartGesture?
     ) {}
 
-    override fun onChartGestureEnd(
+    abstract override fun onChartGestureEnd(
         me: MotionEvent?,
         lastPerformedGesture: ChartTouchListener.ChartGesture?
-    ) { onChartGestureEndBlock(me, lastPerformedGesture) }
+    )
 
     override fun onChartLongPressed(me: MotionEvent?) {}
     override fun onChartDoubleTapped(me: MotionEvent?) {}

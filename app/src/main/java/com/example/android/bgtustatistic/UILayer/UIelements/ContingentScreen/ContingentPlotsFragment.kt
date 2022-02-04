@@ -29,6 +29,7 @@ import com.example.android.bgtustatistic.databinding.FragmentContingentPlotsBind
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
@@ -133,6 +134,28 @@ class ContingentPlotsFragment : Fragment() {
         }
 
     }
+    inner class OnTouchReleaseListenerImpl(
+        private val titleText: String,
+        private val shortNameTextView: MaterialTextView,
+        private val titleTextView: MaterialTextView,
+        private val barChart: BarChart
+    ): OnTouchReleaseListener(){
+        override fun onChartGestureEnd(
+            me: MotionEvent?,
+            lastPerformedGesture: ChartTouchListener.ChartGesture?
+        ) {
+            me?.let {
+                if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
+                    binding.apply {
+                        shortNameTextView.text = ""
+                        titleTextView.text = titleText
+                        barChart.isSelected = false
+                        barChart.highlightValues(null)
+                    }
+                }
+            }
+        }
+    }
     private fun initBarCharts(){
         binding.deductedBarchart.apply {
             setOnChartValueSelectedListener(
@@ -140,37 +163,23 @@ class ContingentPlotsFragment : Fragment() {
                     titleText = getString(R.string.deducted),
                     shortNameTextView = binding.deductedInsShortName,
                     titleTextView = binding.deductedTextview))
-            onChartGestureListener = OnTouchReleaseListener { me, _ ->
-                me?.let {
-                    if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
-                        binding.apply {
-                            deductedInsShortName.text = ""
-                            deductedTextview.text = getString(R.string.deducted)
-                            isSelected = false
-                            highlightValues(null)
-                        }
-                    }
-                }
-            }
+            onChartGestureListener = OnTouchReleaseListenerImpl(
+                titleText = getString(R.string.deducted),
+                shortNameTextView = binding.deductedInsShortName,
+                titleTextView = binding.deductedTextview,
+                barChart = this)
         }
         binding.enrolledBarchart.apply {
             setOnChartValueSelectedListener(
                 OnChartValueSelectedListenerImpl(
-                    titleText = getString(R.string.deducted),
+                    titleText = getString(R.string.enrolled),
                     shortNameTextView = binding.enrolledShortName,
                     titleTextView = binding.enrolledTextview))
-            onChartGestureListener = OnTouchReleaseListener { me, _ ->
-                me?.let {
-                    if(it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_CANCEL){
-                        binding.apply {
-                            enrolledShortName.text = ""
-                            enrolledTextview.text = getString(R.string.enrolled)
-                            isSelected = false
-                            highlightValues(null)
-                        }
-                    }
-                }
-            }
+            onChartGestureListener = OnTouchReleaseListenerImpl(
+                titleText = getString(R.string.enrolled),
+                shortNameTextView = binding.enrolledShortName,
+                titleTextView = binding.enrolledTextview,
+                barChart = this)
         }
     }
     private fun drawBarChart(
