@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlinx.coroutines.Dispatchers
+import java.math.RoundingMode
 
 class ContingentPlotsFragment : Fragment() {
     private var _binding : FragmentContingentPlotsBinding? = null
@@ -164,7 +165,7 @@ class ContingentPlotsFragment : Fragment() {
             }
            if(deducted != 0.0) {
                ++xIndex
-               entries.add(BarEntry(xIndex.toFloat(), deducted.toFloat(), data))
+               entries.add(BarEntry(xIndex.toFloat(), deducted.toFloat().roundToOneDecimal(), data))
            }
 
         }
@@ -182,12 +183,12 @@ class ContingentPlotsFragment : Fragment() {
         val entries = ArrayList<BarEntry>()
         var xIndex = 0;
         list.forEachIndexed { index, data ->
-            val deducted = data.contingent.foldRight(0.0){contingent, acc ->
+            val enrolled = data.contingent.foldRight(0.0){ contingent, acc ->
                 contingent.increasecontingent_set.sumOf { it.percent } + acc
             }
-            if(deducted != 0.0){
+            if(enrolled != 0.0){
                 xIndex++;
-                entries.add(BarEntry(xIndex.toFloat(), deducted.toFloat(), data))
+                entries.add(BarEntry(xIndex.toFloat(), enrolled.toFloat().roundToOneDecimal(), data))
             }
         }
         Log.e("drawBarCharEnrolled", entries.size.toString())
@@ -205,6 +206,8 @@ class ContingentPlotsFragment : Fragment() {
         }
         binding.enrolledBarchart.invalidate()
     }
+    private fun Float.roundToOneDecimal() =
+        this.toBigDecimal().setScale(1, RoundingMode.UP).toFloat()
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
