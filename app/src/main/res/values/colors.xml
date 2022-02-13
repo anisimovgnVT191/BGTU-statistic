@@ -14,4 +14,6 @@
     <color name="piechart_slice2">#FF74AB</color>
     <color name="piechart_slice3">#1F3D6F</color>
     <color name="piechart_slice4">#4A4F6F</color>
+    <color name="piechart_slice5">#B36365</color>
+    <color name="piechart_slice6">#D4D4D4</color>
 </resources>

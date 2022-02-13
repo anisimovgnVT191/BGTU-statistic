@@ -75,7 +75,9 @@ class InstitutesPlotsListFragment : Fragment() {
             resources.getColor(R.color.piechart_slice1),
             resources.getColor(R.color.piechart_slice2),
             resources.getColor(R.color.piechart_slice3),
-            resources.getColor(R.color.piechart_slice4)
+            resources.getColor(R.color.piechart_slice4),
+            resources.getColor(R.color.piechart_slice5),
+            resources.getColor(R.color.piechart_slice6),
         )
         pieLabels = resources.getStringArray(R.array.count_debts)
     }
