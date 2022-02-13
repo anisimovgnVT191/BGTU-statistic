@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.bgtustatistic.R
+import com.example.android.bgtustatistic.UILayer.UIelements.ChartsUtils.PieChartValuesFormatter
 import com.example.android.bgtustatistic.UILayer.init
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
@@ -42,7 +43,7 @@ class PlotsAdapter(
         pieDataSet.colors = pieChartColors
         pieDataSet.valueTextColor = Color.WHITE
         pieDataSet.valueTextSize = 12F
-        pieDataSet.valueFormatter = PercentFormatter(holder.pieChart)
+        pieDataSet.valueFormatter = PieChartValuesFormatter()
         holder.pieChart.apply {
             data = PieData(pieDataSet)
             centerText = """${resources.getString(R.string.pie_chart_center_text)}
