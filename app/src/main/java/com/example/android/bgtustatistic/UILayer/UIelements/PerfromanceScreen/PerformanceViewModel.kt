@@ -11,9 +11,9 @@ import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DataModels.
 import com.example.android.bgtustatistic.DataLayer.PerformanceScreen.DebtRepository
 import com.example.android.bgtustatistic.DataLayer.UserManager.UserManager
 import com.example.android.bgtustatistic.UILayer.StateHolders.PerformanceScreen.PerformanceState
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 
 class PerformanceViewModel(
@@ -77,15 +77,8 @@ class PerformanceViewModel(
     fun fetchDebtsById(idsList: List<Int>){
         fetchDebtsByIdJob?.cancel()
         fetchDebtsByIdJob = viewModelScope.launch {
-            val debtsList: MutableList<DepartmentDebtFull> = emptyList<DepartmentDebtFull>()
-                .toMutableList()
-            val token = UserManager.getUser().token
-            idsList.forEach { id ->
-                val debtsItem = fetchDebtById(id, token!!)
-                debtsItem?.let {
-                    debtsList.add(debtsItem)
-                }
-            }
+            val debtsList = getDebtsListById(idsList).filterNotNull()
+            Log.e("debtsList", debtsList.toString())
             if(debtsList.isNotEmpty()){
                 _uiState.value = uiState.value!!.let {
                     PerformanceState(
@@ -99,7 +92,7 @@ class PerformanceViewModel(
         }
     }
 
-    private suspend fun fetchDebtById(id: Int, token: String): DepartmentDebtFull?{
+    private suspend fun fetchDebtById(id: Int, token: String): DepartmentDebtFull? {
         val requestResult = try {
             debtRepository.getDebtsById(token = "Bearer $token", id = id)
         }catch (e: HttpException){
@@ -108,6 +101,17 @@ class PerformanceViewModel(
             return null
         }
         return requestResult.body()
+    }
+    private suspend fun getDebtsListById(idsList: List<Int>): List<DepartmentDebtFull?>{
+        val resultList = mutableListOf<Deferred<DepartmentDebtFull?>>()
+        coroutineScope {
+            val token = UserManager.getUser().token
+            idsList.forEach { id ->
+                val item = async{ fetchDebtById(id, token!!) }
+                resultList.add(item)
+            }
+        }
+        return resultList.awaitAll()
     }
     private fun updateStateByRelogin(relogin: Boolean){
         _uiState.value = PerformanceState(
